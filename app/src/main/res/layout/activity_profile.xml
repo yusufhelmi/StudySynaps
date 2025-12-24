@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".ProfileActivity">
+
+    <!-- Container Utama -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/content_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="?attr/actionBarSize">
+
+        <!-- 1. SPACE UNTUK STATUS BAR (Putih) -->
+        <!-- Kita biarkan background parent putih, dan mulai background biru sedikit ke bawah -->
+        
+        <!-- 2. BACKGROUND BIRU (Rounded Top) -->
+         <View
+            android:id="@+id/blue_background"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="160dp"
+            android:background="@drawable/bg_blue_rounded_top"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <!-- 3. FOTO PROFIL -->
+        <!-- Overlapping antara area putih dan biru -->
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/iv_profile_picture"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:layout_marginTop="0dp"
+            android:src="@drawable/cristiano_ronaldo"
+            android:scaleType="centerCrop"
+            app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full"
+            app:layout_constraintTop_toTopOf="@id/blue_background"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/blue_background" />
+
+        <!-- 4. NAMA PROFIL -->
+        <TextView
+            android:id="@+id/tv_profile_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="Cristiano Ronaldo"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_profile_picture" />
+
+        <!-- 5. KONTEN MENU SCROLLVIEW -->
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="16dp"
+            android:fillViewport="true"
+            app:layout_constraintTop_toBottomOf="@id/tv_profile_name"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="24dp"
+                android:paddingBottom="24dp">
+
+                <!-- CARD MENU UTAMA -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="0dp"
+                    app:cardBackgroundColor="@color/white"
+                    app:strokeWidth="0dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingVertical="8dp">
+
+                        <!-- DETAIL PROFILE -->
+                        <include layout="@layout/item_profile_menu"
+                            android:id="@+id/menu_detail_profile"/>
+
+                        <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#F0F0F0" android:layout_marginHorizontal="16dp"/>
+
+                        <!-- PRIVACY ACCOUNT -->
+                        <include layout="@layout/item_profile_menu"
+                            android:id="@+id/menu_privacy_account"/>
+
+                        <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#F0F0F0" android:layout_marginHorizontal="16dp"/>
+
+                        <!-- HELP CENTER -->
+                        <include layout="@layout/item_profile_menu"
+                            android:id="@+id/menu_help_center"/>
+
+                        <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#F0F0F0" android:layout_marginHorizontal="16dp"/>
+
+                        <!-- PRIVACY POLICY -->
+                        <include layout="@layout/item_profile_menu"
+                            android:id="@+id/menu_privacy_policy"/>
+
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- CARD LOGOUT -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="0dp"
+                    app:cardBackgroundColor="@color/white"
+                    app:strokeWidth="0dp">
+
+                    <include layout="@layout/item_profile_menu"
+                        android:id="@+id/menu_logout"/>
+
+                </com.google.android.material.card.MaterialCardView>
+
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- FOOTER NAVIGASI -->
+    <include layout="@layout/layout_footer" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
+    

@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white"
+    android:paddingBottom="42dp">
+
+    <!-- Header -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/sheet_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/iv_drive_logo"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_launcher_foreground"
+            app:tint="#FFC107"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+            <!-- Triangle placeholder -->
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="Sisipkan file"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@id/iv_drive_logo"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <ImageView
+            android:id="@+id/btn_close_sheet"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_launcher_foreground"
+            app:tint="@android:color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+            <!-- X icon placeholder -->
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- Tabs (Visual Only for now) -->
+    <LinearLayout
+        android:id="@+id/tab_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingHorizontal="16dp"
+        app:layout_constraintTop_toBottomOf="@id/sheet_header">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Upload"
+            android:textColor="#4285F4"
+            android:textStyle="bold"
+            android:paddingBottom="8dp"
+            android:layout_marginEnd="24dp"/>
+            <!-- Blue underline would be needed for perfect match -->
+        
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#4285F4"
+            android:layout_marginTop="-2dp"
+            android:visibility="gone"/> 
+            <!-- Hacky underline placeholder -->
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Drive Saya"
+            android:textColor="#757575"
+            android:layout_marginEnd="24dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Terbaru"
+            android:textColor="#757575" />
+    </LinearLayout>
+    
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#E0E0E0"
+        app:layout_constraintTop_toBottomOf="@id/tab_container"/>
+
+    <!-- Warning Info Box -->
+    <LinearLayout
+        android:id="@+id/info_box"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:background="#E0E0E0"
+        android:padding="12dp"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/divider">
+        
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_launcher_foreground"
+            app:tint="#616161"
+            android:layout_marginEnd="8dp"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Upload 1 file yang didukung: image pdf, doc atau video. Maks 10 MB. Salinan file yang dipilih akan dikirim..."
+            android:textSize="10sp"
+            android:textColor="#616161"/>
+    </LinearLayout>
+
+    <!-- Upload Area Illustration -->
+    <ImageView
+        android:id="@+id/iv_cloud"
+        android:layout_width="150dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="32dp"
+        android:src="@drawable/ic_launcher_foreground"
+        app:tint="#E0E0E0"
+        app:layout_constraintTop_toBottomOf="@id/info_box"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+        <!-- Cloud placeholder -->
+
+    <!-- Browse Button -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_browse"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Jelajah"
+        android:textAllCaps="false"
+        app:cornerRadius="20dp"
+        android:backgroundTint="#4285F4"
+        app:layout_constraintTop_toBottomOf="@id/iv_cloud"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Masukan file ke sini"
+        android:textColor="#757575"
+        android:textSize="12sp"
+        app:layout_constraintTop_toBottomOf="@id/btn_browse"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

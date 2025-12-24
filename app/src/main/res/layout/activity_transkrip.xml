@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    tools:context=".TranskripActivity">
+
+    <!-- Header -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/header_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageButton
+            android:id="@+id/btn_back"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_arrow_back"
+            app:tint="@android:color/black"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:contentDescription="Back" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Transkrip Nilai"
+            android:textColor="@android:color/black"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- Circular Indicator Container -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/circular_stats_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="16dp"
+        app:layout_constraintTop_toBottomOf="@id/header_container">
+
+        <!-- Using basic ProgressBar or external lib if Material ProgressIndicator not fully avail,
+             but since it's standard material let's try Material layout.
+             If not available, we can fallback to a custom drawable or library.
+             Assuming standard Material Components are present. -->
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/progress_ipk"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:progress="94"
+            app:indicatorSize="180dp"
+            app:trackThickness="12dp"
+            app:trackCornerRadius="6dp"
+            app:trackColor="#E0E0E0"
+            app:indicatorColor="#1A237E"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="index"
+            android:textSize="14sp"
+            android:textColor="#1A237E"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/tv_ipk_value"
+            app:layout_constraintEnd_toEndOf="@+id/progress_ipk"
+            app:layout_constraintStart_toStartOf="@+id/progress_ipk" />
+
+        <TextView
+            android:id="@+id/tv_ipk_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="3.76"
+            android:textSize="36sp"
+            android:textColor="#1A237E"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/progress_ipk"
+            app:layout_constraintEnd_toEndOf="@+id/progress_ipk"
+            app:layout_constraintStart_toStartOf="@+id/progress_ipk"
+            app:layout_constraintTop_toTopOf="@+id/progress_ipk" />
+            
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="prestasi"
+            android:textSize="14sp"
+            android:textColor="#1A237E"
+            android:textStyle="bold"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/tv_ipk_value"
+            app:layout_constraintEnd_toEndOf="@+id/progress_ipk"
+            app:layout_constraintStart_toStartOf="@+id/progress_ipk" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- Stats Row -->
+    <LinearLayout
+        android:id="@+id/stats_row"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:weightSum="4"
+        app:layout_constraintTop_toBottomOf="@id/circular_stats_container">
+        
+        <!-- Fake Stats Pills -->
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/stat_pill_bg"
+            android:gravity="center"
+            android:paddingVertical="8dp"
+            android:text="44"
+            android:textColor="#1A237E"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/stat_pill_bg"
+            android:gravity="center"
+            android:paddingVertical="8dp"
+            android:text="44"
+            android:textColor="#1A237E"
+            android:textStyle="bold" />
+            
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/stat_pill_bg"
+            android:gravity="center"
+            android:paddingVertical="8dp"
+            android:text="44"
+            android:textColor="#1A237E"
+            android:textStyle="bold" />
+            
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/stat_pill_bg"
+            android:gravity="center"
+            android:paddingVertical="8dp"
+            android:text="44"
+            android:textColor="#1A237E"
+            android:textStyle="bold" />
+            
+    </LinearLayout>
+
+    <!-- Content List -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_transkrip"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:clipToPadding="false"
+        android:paddingBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/stats_row"
+        tools:listitem="@layout/item_transkrip" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

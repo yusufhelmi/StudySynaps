@@ -44,6 +44,23 @@ class Login : AppCompatActivity() {
         btnBack.setOnClickListener {
             val intent = Intent(this, LoginOrRegist::class.java)
             startActivity(intent)
+            overridePendingTransition(0, 0)
+            finish()
+        }
+
+        val btnRegist = findViewById<TextView>(R.id.tv_register_link)
+        btnRegist.setOnClickListener {
+            val intent = Intent(this, register::class.java)
+            startActivity(intent)
+            overridePendingTransition(0, 0)
+            finish()
+        }
+
+        val btnLogin = findViewById<Button>(R.id.btn_login)
+        btnLogin.setOnClickListener {
+            val intent = Intent(this, home::class.java)
+            startActivity(intent)
+            overridePendingTransition(0, 0)
             finish()
         }
 

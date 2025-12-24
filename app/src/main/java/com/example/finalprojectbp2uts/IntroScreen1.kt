@@ -35,6 +35,7 @@ class IntroScreen1 : AppCompatActivity() {
 
             // 4. Jalankan perintah pindah halaman
             startActivity(intent)
+            overridePendingTransition(0, 0)
 
             // 5. Tutup layar ini agar tombol "Back" tidak kembali ke sini
             finish()
@@ -42,8 +43,9 @@ class IntroScreen1 : AppCompatActivity() {
 
         val btnLewati = findViewById<TextView>(R.id.textViewLewati)
         btnLewati.setOnClickListener {
-            val intent = Intent(this, PilihUser::class.java)
+            val intent = Intent(this, LoginOrRegist::class.java)
             startActivity(intent)
+            overridePendingTransition(0, 0)
             finish()
         }
     }

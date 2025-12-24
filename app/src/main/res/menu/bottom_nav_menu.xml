@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Urutan 1: Home -->
+    <item
+        android:id="@+id/nav_home"
+        android:title="Home"
+        android:icon="@drawable/ic_home_24" />
+
+    <!-- Urutan 2: Jadwal -->
+    <item
+        android:id="@+id/nav_jadwal"
+        android:title="Jadwal"
+        android:icon="@drawable/ic_schedule_24" />
+
+    <!-- Urutan 3: Scan (Placeholder di tengah, tanpa judul) -->
+    <item
+        android:id="@+id/nav_scan"
+        android:title="Scan"
+        android:icon="@drawable/ic_scan_24" />
+
+    <!-- Urutan 4: KRS -->
+    <item
+        android:id="@+id/nav_krs"
+        android:title="KRS"
+        android:icon="@drawable/ic_krs_24" />
+
+    <!-- Urutan 5: Profil -->
+    <item
+        android:id="@+id/nav_profil"
+        android:title="Profil"
+        android:icon="@drawable/ic_profile_24" />
+
+</menu>

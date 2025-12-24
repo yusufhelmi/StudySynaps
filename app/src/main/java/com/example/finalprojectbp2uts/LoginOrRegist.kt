@@ -22,15 +22,17 @@ class LoginOrRegist : AppCompatActivity() {
 
         val btnBack = findViewById<TextView>(R.id.textViewBack)
         btnBack.setOnClickListener {
-            val intent = Intent(this, PilihUser::class.java)
+            val intent = Intent(this, IntroScreen3::class.java)
             startActivity(intent)
+            overridePendingTransition(0, 0)
             finish()
         }
 
         val btnDaftar = findViewById<Button>(R.id.buttonDaftar)
         btnDaftar.setOnClickListener {
-            val intent = Intent(this, LoginOrRegist::class.java)
+            val intent = Intent(this, register::class.java)
             startActivity(intent)
+            overridePendingTransition(0, 0)
             finish()
         }
 
@@ -38,6 +40,7 @@ class LoginOrRegist : AppCompatActivity() {
         btnMasuk.setOnClickListener {
             val intent = Intent(this, Login::class.java)
             startActivity(intent)
+            overridePendingTransition(0, 0)
             finish()
         }
     }

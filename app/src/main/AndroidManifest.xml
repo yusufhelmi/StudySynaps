@@ -2,6 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
+
+    <uses-permission android:name="android.permission.CAMERA" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -11,6 +17,26 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.FinalProjectBP2UTS">
+        <activity android:name=".KrsActivity" />
+
+        <activity
+            android:name=".krs"
+            android:exported="false" />
+        <activity
+            android:name=".ScanActivity"
+            android:exported="false" />
+        <activity
+            android:name=".JadwalActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Jadwal"
+            android:exported="false" />
+        <activity
+            android:name=".home"
+            android:exported="false" />
+        <activity
+            android:name=".register"
+            android:exported="false" />
         <activity
             android:name=".Login"
             android:exported="false" />
@@ -21,20 +47,44 @@
             android:name=".LoginOrRegist"
             android:exported="false" />
         <activity
-            android:name=".PilihUser"
+            android:name=".ProfileActivity"
             android:exported="false" />
         <activity
             android:name=".IntroScreen2"
             android:exported="false" />
         <activity
+            android:name=".PresensiActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TranskripActivity"
+            android:exported="false" />
+        <activity
+            android:name=".KtmActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MateriTugasActivity"
+            android:exported="false" />
+        <activity
+            android:name=".DetailTugasActivity"
+            android:exported="false" />
+        <activity
+            android:name=".HasilStudiActivity"
+            android:exported="false" />
+        <activity
             android:name=".IntroScreen1"
+            android:exported="false" />
+
+        <activity
+            android:name=".PrivacyPolicyActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
     </application>
-
 </manifest>

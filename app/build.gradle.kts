@@ -38,6 +38,17 @@ android {
 }
 
 dependencies {
+    // CameraX core libraries
+    val cameraxVersion = "1.3.1" // Gunakan versi terbaru jika ada
+    implementation("androidx.viewpager2:viewpager2:1.1.0")
+    implementation("androidx.camera:camera-core:$cameraxVersion")
+    implementation("androidx.camera:camera-camera2:$cameraxVersion")
+    implementation("androidx.camera:camera-lifecycle:$cameraxVersion")
+    implementation("androidx.camera:camera-view:$cameraxVersion")
+
+    // ML Kit Barcode Scanning (untuk mendeteksi QR code)
+    implementation("com.google.mlkit:barcode-scanning:17.2.0")
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)

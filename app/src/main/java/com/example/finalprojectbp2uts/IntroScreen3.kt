@@ -27,10 +27,11 @@ class IntroScreen3 : AppCompatActivity() {
         btnLanjutkan.setOnClickListener {
             // 3. Buat "Intent" untuk pindah ke layar berikutnya
             // (Ganti 'introScreen2::class.java' dengan nama Activity ke-2 Anda)
-            val intent = Intent(this, PilihUser::class.java)
+            val intent = Intent(this, LoginOrRegist::class.java)
 
             // 4. Jalankan perintah pindah halaman
             startActivity(intent)
+            overridePendingTransition(0, 0)
 
             // 5. Tutup layar ini agar tombol "Back" tidak kembali ke sini
             finish()
@@ -40,13 +41,15 @@ class IntroScreen3 : AppCompatActivity() {
         btnBack.setOnClickListener {
             val intent = Intent(this, IntroScreen2::class.java)
             startActivity(intent)
+            overridePendingTransition(0, 0)
             finish()
         }
 
         val btnLewati = findViewById<TextView>(R.id.textViewLewati)
         btnLewati.setOnClickListener {
-            val intent = Intent(this, PilihUser::class.java)
+            val intent = Intent(this, LoginOrRegist::class.java)
             startActivity(intent)
+            overridePendingTransition(0, 0)
             finish()
         }
     }
