@@ -7,43 +7,12 @@
     android:layout_height="match_parent"
     tools:context=".IntroScreen1">
 
-    <ImageView
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPager"
         android:layout_width="match_parent"
-        android:layout_height="250dp"
-        android:src="@drawable/gambar1"
-        app:layout_constraintBottom_toTopOf="@+id/textView"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="30dp" />
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="StudySynaps"
-        android:textStyle="bold"
-        android:textSize="30sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.553" />
-
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="308dp"
-        android:layout_height="98dp"
-        android:text="Kelola tugas dengan mudah, dan dengan sekali klik semua yang Anda butuhkan untuk kelas akan terintegrasi."
-        android:textAlignment="center"
-        android:textSize="20sp"
-        android:textStyle="normal"
-        android:fontFamily="sans-serif"
-        android:textColor="#999999"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.701" />
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -53,10 +22,14 @@
         android:layout_marginTop="20dp"
         android:gravity="center"
         android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@+id/textView1">
+        app:layout_constraintBottom_toTopOf="@+id/buttonLanjut"
+        app:layout_constraintTop_toBottomOf="@+id/viewPager"
+        app:layout_constraintVertical_bias="1.0"
+        android:layout_marginBottom="20dp">
 
         <!-- Lingkaran 1 -->
         <View
+            android:id="@+id/dot1"
             android:layout_width="12dp"
             android:layout_height="12dp"
             android:layout_margin="14dp"
@@ -64,6 +37,7 @@
 
         <!-- Lingkaran 2 -->
         <View
+            android:id="@+id/dot2"
             android:layout_width="12dp"
             android:layout_height="12dp"
             android:layout_margin="15dp"
@@ -71,6 +45,7 @@
 
         <!-- Lingkaran 3 -->
         <View
+            android:id="@+id/dot3"
             android:layout_width="12dp"
             android:layout_height="12dp"
             android:layout_margin="15dp"
@@ -82,30 +57,23 @@
         android:id="@+id/buttonLanjut"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="18dp"
+        android:layout_marginBottom="8dp"
         android:backgroundTint="#100D40"
         android:text="Lanjutkan"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/textViewLewati"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-        app:layout_constraintVertical_bias="0.339" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/textViewLewati"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
+        android:layout_marginBottom="40dp"
         android:text="Lewati Tahap Ini"
         android:textColor="#100D40"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonLanjut"
-        app:layout_constraintVertical_bias="0.235" />
-
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

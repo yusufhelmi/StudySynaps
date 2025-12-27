@@ -22,7 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="16dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/ic_arrow_back"
             app:layout_constraintStart_toStartOf="parent"
@@ -183,11 +183,12 @@
                     app:cardCornerRadius="8dp"
                     app:cardElevation="0dp"
                     android:layout_marginEnd="16dp">
-                    <!-- Tambahkan ImageView logo Google di sini jika ada -->
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:text="G" android:gravity="center" android:textStyle="bold"/>
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_google"
+                        android:layout_gravity="center"
+                        android:contentDescription="Google Login"/>
                 </com.google.android.material.card.MaterialCardView>
 
                 <!-- Apple -->
@@ -199,25 +200,14 @@
                     app:cardCornerRadius="8dp"
                     app:cardElevation="0dp"
                     android:layout_marginEnd="16dp">
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:text="" android:gravity="center" android:textSize="20sp"/>
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_apple"
+                        android:layout_gravity="center"
+                        android:contentDescription="Apple Login"/>
                 </com.google.android.material.card.MaterialCardView>
 
-                <!-- Facebook -->
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="60dp"
-                    android:layout_height="40dp"
-                    app:strokeColor="#E0E0E0"
-                    app:strokeWidth="1dp"
-                    app:cardCornerRadius="8dp"
-                    app:cardElevation="0dp">
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:text="f" android:gravity="center" android:textStyle="bold" android:textColor="#1877F2"/>
-                </com.google.android.material.card.MaterialCardView>
             </LinearLayout>
 
             <!-- Footer: Register Link -->

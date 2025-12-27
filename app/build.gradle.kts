@@ -4,15 +4,13 @@ plugins {
 }
 
 android {
-    namespace = "com.example.finalprojectbp2uts"
-    compileSdk {
-        version = release(36)
-    }
+    namespace = "com.example.studysynaps"
+    compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.finalprojectbp2uts"
+        applicationId = "com.example.studysynaps"
         minSdk = 24
-        targetSdk = 36
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
@@ -29,24 +27,24 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = "1.8"
     }
 }
 
 dependencies {
     // CameraX core libraries
-    val cameraxVersion = "1.3.1" // Gunakan versi terbaru jika ada
+    val cameraxVersion = "1.3.1"
     implementation("androidx.viewpager2:viewpager2:1.1.0")
     implementation("androidx.camera:camera-core:$cameraxVersion")
     implementation("androidx.camera:camera-camera2:$cameraxVersion")
     implementation("androidx.camera:camera-lifecycle:$cameraxVersion")
     implementation("androidx.camera:camera-view:$cameraxVersion")
 
-    // ML Kit Barcode Scanning (untuk mendeteksi QR code)
+    // ML Kit Barcode Scanning
     implementation("com.google.mlkit:barcode-scanning:17.2.0")
 
     implementation(libs.androidx.core.ktx)

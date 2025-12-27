@@ -19,6 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "finalProjectBP2UTS"
+rootProject.name = "StudySynaps"
 include(":app")
  

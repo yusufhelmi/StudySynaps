@@ -17,6 +17,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.FinalProjectBP2UTS">
+
+        <meta-data
+            android:name="com.google.mlkit.vision.DEPENDENCIES"
+            android:value="barcode" />
+
         <activity android:name=".KrsActivity" />
 
         <activity
@@ -29,9 +34,6 @@
             android:name=".JadwalActivity"
             android:exported="false" />
         <activity
-            android:name=".Jadwal"
-            android:exported="false" />
-        <activity
             android:name=".home"
             android:exported="false" />
         <activity
@@ -40,18 +42,14 @@
         <activity
             android:name=".Login"
             android:exported="false" />
-        <activity
-            android:name=".IntroScreen3"
-            android:exported="false" />
+
         <activity
             android:name=".LoginOrRegist"
             android:exported="false" />
         <activity
             android:name=".ProfileActivity"
             android:exported="false" />
-        <activity
-            android:name=".IntroScreen2"
-            android:exported="false" />
+
         <activity
             android:name=".PresensiActivity"
             android:exported="false" />
