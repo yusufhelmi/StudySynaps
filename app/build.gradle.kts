@@ -4,13 +4,13 @@ plugins {
 }
 
 android {
-    namespace = "com.example.finalprojectbp2uts"
+    namespace = "com.example.StudySynaps"
     compileSdk {
         version = release(36)
     }
 
     defaultConfig {
-        applicationId = "com.example.finalprojectbp2uts"
+        applicationId = "com.example.StudySynaps"
         minSdk = 24
         targetSdk = 36
         versionCode = 1
