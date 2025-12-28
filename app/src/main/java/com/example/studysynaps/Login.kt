@@ -40,22 +40,6 @@ class Login : AppCompatActivity() {
             insets
         }
 
-        val btnBack = findViewById<ImageButton>(R.id.btn_back)
-        btnBack.setOnClickListener {
-            val intent = Intent(this, LoginOrRegist::class.java)
-            startActivity(intent)
-            overridePendingTransition(0, 0)
-            finish()
-        }
-
-        val btnRegist = findViewById<TextView>(R.id.tv_register_link)
-        btnRegist.setOnClickListener {
-            val intent = Intent(this, register::class.java)
-            startActivity(intent)
-            overridePendingTransition(0, 0)
-            finish()
-        }
-
         val btnLogin = findViewById<Button>(R.id.btn_login)
         btnLogin.setOnClickListener {
             val intent = Intent(this, home::class.java)
@@ -64,6 +48,30 @@ class Login : AppCompatActivity() {
             finish()
         }
 
+        setupListeners()
+    }
+
+    private fun setupListeners() {
+        findViewById<TextView>(R.id.tv_register_link).setOnClickListener {
+            startActivity(Intent(this, register::class.java))
+            overridePendingTransition(0, 0)
+            finish()
+        }
+
+        findViewById<TextView>(R.id.tv_forgot_password).setOnClickListener {
+            startActivity(Intent(this, ForgotPasswordActivity::class.java))
+            overridePendingTransition(0, 0)
+            finish()
+        }
+
+        findViewById<ImageButton>(R.id.btn_back).setOnClickListener {
+            // Navigate back to IntroScreen1
+            val intent = Intent(this, IntroScreen1::class.java)
+            // Clear back stack so user can't go back to Login page easily if intended
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            startActivity(intent)
+            overridePendingTransition(0, 0)
+            finish()
+        }
     }
 }
-
