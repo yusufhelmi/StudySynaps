@@ -37,9 +37,9 @@ class IntroScreen1 : AppCompatActivity() {
         btnLewati = findViewById(R.id.textViewLewati)
 
         val introItems = listOf(
-            IntroItem(R.drawable.gambar1, "StudySynaps", "Kelola tugas dengan mudah, dan dengan sekali klik semua yang Anda butuhkan untuk kelas akan terintegrasi."),
-            IntroItem(R.drawable.fiturmodern, "Fitur Modern", "Tukar peran Anda dengan lancar, dan dengan sekali klik Anda akan berada di pusat aktivitas akademik."),
-            IntroItem(R.drawable.userfamily, "User Family", "Akses semua data akademik Anda dengan mudah, dan dengan sekali klik dasbor Anda siap kapan pun Anda membutuhkannya."),
+            IntroItem(R.drawable.ic_intro_1, "StudySynaps", "Kelola tugas dengan mudah, dan dengan sekali klik semua yang Anda butuhkan untuk kelas akan terintegrasi."),
+            IntroItem(R.drawable.ic_intro_2, "Fitur Modern", "Tukar peran Anda dengan lancar, dan dengan sekali klik Anda akan berada di pusat aktivitas akademik."),
+            IntroItem(R.drawable.ic_intro_3, "User Family", "Akses semua data akademik Anda dengan mudah, dan dengan sekali klik dasbor Anda siap kapan pun Anda membutuhkannya."),
             IntroItem(0, "", "") // Dummy item for swipe-to-finish
         )
 

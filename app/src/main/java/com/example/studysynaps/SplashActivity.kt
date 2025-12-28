@@ -53,11 +53,11 @@ class SplashActivity : AppCompatActivity() {
             
             // Phase 1: Logo Up + Color Change
             val logoUp = ObjectAnimator.ofFloat(logo, "translationY", 0f)
-            logoUp.duration = 1500
+            logoUp.duration = 1000
             logoUp.interpolator = DecelerateInterpolator()
 
             val colorAnim = ValueAnimator.ofObject(ArgbEvaluator(), Color.parseColor("#1A2142"), Color.WHITE)
-            colorAnim.duration = 1500
+            colorAnim.duration = 400
             colorAnim.addUpdateListener { animator ->
                 mainContainer.setBackgroundColor(animator.animatedValue as Int)
             }
@@ -71,7 +71,7 @@ class SplashActivity : AppCompatActivity() {
             // At end (White BG): Tint = Dark Blue. Result = Dark Blue.
             
             val tintAnim = ValueAnimator.ofObject(ArgbEvaluator(), Color.WHITE, Color.parseColor("#1A2142"))
-            tintAnim.duration = 1500
+            tintAnim.duration = 400
             tintAnim.addUpdateListener { animator ->
                 logo.setColorFilter(animator.animatedValue as Int)
             }
@@ -82,7 +82,7 @@ class SplashActivity : AppCompatActivity() {
             // Phase 2: Spread (Logo Left, Text Fade In + Slide to natural pos)
             // Move logo LEFT by 'shiftDistance'
             val logoMoveLeft = ObjectAnimator.ofFloat(logo, "translationX", -shiftDistance)
-            logoMoveLeft.duration = 800
+            logoMoveLeft.duration = 600
             logoMoveLeft.interpolator = DecelerateInterpolator()
 
             val textFade = ObjectAnimator.ofFloat(appNameLayout, "alpha", 0f, 1f)
