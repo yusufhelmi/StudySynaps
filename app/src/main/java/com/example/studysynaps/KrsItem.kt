@@ -1,4 +1,4 @@
-package com.example.studysynaps
+﻿package com.example.studysynaps
 
 data class KrsItem(
     val id: Int,

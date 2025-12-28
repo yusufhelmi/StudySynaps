@@ -1,4 +1,4 @@
-package com.example.studysynaps
+﻿package com.example.studysynaps
 
 import android.content.Intent
 import android.os.Bundle    import android.widget.LinearLayout

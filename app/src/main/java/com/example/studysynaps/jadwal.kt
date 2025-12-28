@@ -1,4 +1,4 @@
-package com.example.studysynaps
+﻿package com.example.studysynaps
 
 // Nama kelas harus "Jadwal"
 data class Jadwal(

@@ -1,4 +1,4 @@
-package com.example.studysynaps
+﻿package com.example.studysynaps
 
 import android.graphics.Color
 import android.os.Bundle

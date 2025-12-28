@@ -1,5 +1,4 @@
 package com.example.studysynaps
-
 import android.os.Bundle
 import android.widget.ImageButton
 import android.widget.TextView

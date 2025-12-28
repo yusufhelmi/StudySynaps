@@ -1,4 +1,4 @@
-// In app/src/main/java/com/example/finalprojectbp2uts/ScanViewPagerAdapter.kt
+﻿// In app/src/main/java/com/example/finalprojectbp2uts/ScanViewPagerAdapter.kt
 
 package com.example.studysynaps
 

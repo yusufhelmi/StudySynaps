@@ -1,4 +1,4 @@
-package com.example.studysynaps
+﻿package com.example.studysynaps
 
 import android.animation.AnimatorSet
 import android.animation.ArgbEvaluator

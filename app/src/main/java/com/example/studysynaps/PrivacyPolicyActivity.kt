@@ -1,4 +1,4 @@
-package com.example.studysynaps
+﻿package com.example.studysynaps
 
 import android.os.Bundle
 import android.widget.ImageButton
@@ -38,8 +38,8 @@ class PrivacyPolicyActivity : AppCompatActivity() {
     private fun getPrivacyPolicyText(): String {
         return """
         1. Pendahuluan
-        Selamat datang di StudySynaps (“Kami”, “Aplikasi”, atau “Layanan”).
-        Kebijakan Privasi ini menjelaskan bagaimana kami mengumpulkan, menggunakan, melindungi, dan membagikan informasi pribadi pengguna (“Anda”) ketika menggunakan layanan kami.
+        Selamat datang di StudySynaps (â€œKamiâ€, â€œAplikasiâ€, atau â€œLayananâ€).
+        Kebijakan Privasi ini menjelaskan bagaimana kami mengumpulkan, menggunakan, melindungi, dan membagikan informasi pribadi pengguna (â€œAndaâ€) ketika menggunakan layanan kami.
         Dengan menggunakan aplikasi ini, Anda dianggap telah membaca, memahami, dan menyetujui isi Kebijakan Privasi ini.
 
         2. Informasi yang Kami Kumpulkan
@@ -105,9 +105,9 @@ class PrivacyPolicyActivity : AppCompatActivity() {
 
         10. Kontak Kami
         Jika Anda memiliki pertanyaan, saran, atau keluhan terkait Kebijakan Privasi ini, silakan hubungi kami melalui:
-        📧 support@studysynaps.com
-        🌐 www.studysynaps.com
-        📅 Terakhir diperbarui: 28 Oktober 2025
+        ðŸ“§ support@studysynaps.com
+        ðŸŒ www.studysynaps.com
+        ðŸ“… Terakhir diperbarui: 28 Oktober 2025
         """.trimIndent()
     }
 }

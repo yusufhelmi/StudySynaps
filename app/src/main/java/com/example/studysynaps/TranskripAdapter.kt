@@ -1,4 +1,4 @@
-package com.example.studysynaps
+﻿package com.example.studysynaps
 
 import android.content.res.ColorStateList
 import android.graphics.drawable.GradientDrawable
