@@ -11,45 +11,115 @@ import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import android.view.View
+import android.widget.TextView
+import android.widget.Toast
+import androidx.recyclerview.widget.RecyclerView
+import com.example.studysynaps.network.RetrofitClient // Import Retrofit
+import com.example.studysynaps.models.ScheduleItem // Import ScheduleItem
+import com.example.studysynaps.models.SessionManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class home : AppCompatActivity() {
+
+    private lateinit var todayAdapter: AdapterJadwal
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        // 1. Mengaktifkan mode Edge-to-Edge agar layout memenuhi layar
         enableEdgeToEdge()
-
-        // 2. Mengatur ikon status bar (jam, baterai) menjadi hitam agar terlihat di background terang
         WindowCompat.getInsetsController(window, window.decorView).isAppearanceLightStatusBars = true
-
-        // 3. Menghubungkan Activity dengan layout XML-nya
         setContentView(R.layout.activity_home)
 
-        // 4. Memanggil semua fungsi setup
         setupEdgeToEdge()
         setupFooter()
         setupMenu()
+        setupUserData()
+        
+        setupScheduleRecyclerView()
+        fetchTodaySchedule()
     }
 
-    /**
-     * Fungsi ini menambahkan padding atas pada konten utama
-     * agar tidak tertimpa oleh status bar.
-     */
+    private fun setupScheduleRecyclerView() {
+        val rvToday = findViewById<RecyclerView>(R.id.rv_today_schedule)
+        todayAdapter = AdapterJadwal(emptyList())
+        rvToday.adapter = todayAdapter
+    }
+
+    private fun fetchTodaySchedule() {
+        val session = SessionManager(this)
+        val userId = session.getUserId()
+
+        // Setup Tanggal Hari Ini di Title, misal: "Jadwal Hari Ini (Senin)"
+        val tvTitle = findViewById<TextView>(R.id.tv_schedule_title)
+        val todayName = SimpleDateFormat("EEEE", Locale("id", "ID")).format(Date())
+        tvTitle.text = "Jadwal Hari Ini ($todayName)"
+
+        if (userId == null) return
+
+        RetrofitClient.instance.getTodaySchedule(userId).enqueue(object : Callback<com.example.studysynaps.models.ApiResponse<List<ScheduleItem>>> {
+            override fun onResponse(
+                call: Call<com.example.studysynaps.models.ApiResponse<List<ScheduleItem>>>,
+                response: Response<com.example.studysynaps.models.ApiResponse<List<ScheduleItem>>>
+            ) {
+                val rvToday = findViewById<RecyclerView>(R.id.rv_today_schedule)
+                val emptyLayout = findViewById<View>(R.id.layout_empty_schedule)
+
+                if (response.isSuccessful && response.body()?.status == true) {
+                    val data = response.body()?.data ?: emptyList()
+                    if (data.isNotEmpty()) {
+                        todayAdapter.updateData(data)
+                        rvToday.visibility = View.VISIBLE
+                        emptyLayout.visibility = View.GONE
+                    } else {
+                        rvToday.visibility = View.GONE
+                        emptyLayout.visibility = View.VISIBLE
+                    }
+                } else {
+                    // Jika gagal/kosong dari API
+                    rvToday.visibility = View.GONE
+                    emptyLayout.visibility = View.VISIBLE
+                }
+            }
+
+            override fun onFailure(call: Call<com.example.studysynaps.models.ApiResponse<List<ScheduleItem>>>, t: Throwable) {
+                // Error connection also shows empty state
+                findViewById<RecyclerView>(R.id.rv_today_schedule).visibility = View.GONE
+                findViewById<View>(R.id.layout_empty_schedule).visibility = View.VISIBLE
+            }
+        })
+    }
+
+    private fun setupUserData() {
+        val sessionManager = SessionManager(this)
+        
+        val tvName = findViewById<TextView>(R.id.tv_user_name)
+        val tvNim = findViewById<TextView>(R.id.tv_user_id)
+        
+        val rawNim = sessionManager.getUserNim() ?: ""
+        tvName.text = sessionManager.getUserName() ?: "Mahasiswa"
+        
+        if (rawNim.length == 8 && rawNim.all { it.isDigit() }) {
+            val formattedNim = "${rawNim.substring(0, 2)}.${rawNim.substring(2, 4)}.${rawNim.substring(4)}"
+            tvNim.text = formattedNim
+        } else {
+            tvNim.text = rawNim.ifEmpty { "NIM Tidak Ditemukan" }
+        }
+    }
+
     private fun setupEdgeToEdge() {
         val contentScrollView: NestedScrollView = findViewById(R.id.content_scroll_view)
         ViewCompat.setOnApplyWindowInsetsListener(contentScrollView) { view, windowInsets ->
             val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
             view.updatePadding(top = insets.top)
-            // Baris ini wajib ada untuk mengembalikan insets
             windowInsets
         }
     }
 
-    /**
-     * Fungsi ini memberikan listener pada tombol menu di dalam konten,
-     * seperti tombol Presensi.
-     */
     private fun setupMenu() {
         findViewById<android.widget.LinearLayout>(R.id.btn_presensi).setOnClickListener {
             startActivity(Intent(this, PresensiActivity::class.java))
@@ -67,30 +137,9 @@ class home : AppCompatActivity() {
             startActivity(Intent(this, HasilStudiActivity::class.java))
             overridePendingTransition(0, 0)
         }
-
-        // Schedule Card Listeners
-        findViewById<View>(R.id.card_schedule_1)?.setOnClickListener {
-            startActivity(Intent(this, MateriTugasActivity::class.java))
-            overridePendingTransition(0, 0)
-        }
-        findViewById<View>(R.id.card_schedule_2)?.setOnClickListener {
-            startActivity(Intent(this, MateriTugasActivity::class.java))
-            overridePendingTransition(0, 0)
-        }
-        findViewById<View>(R.id.card_schedule_3)?.setOnClickListener {
-            startActivity(Intent(this, MateriTugasActivity::class.java))
-            overridePendingTransition(0, 0)
-        }
-        
-        // TODO: Tambahkan listener untuk menu lain di sini jika perlu
     }
 
-    /**
-     * Fungsi ini mengatur semua logika untuk footer, termasuk padding bawah
-     * dan navigasi antar halaman.
-     */
     private fun setupFooter() {
-        // Mengatur padding bawah untuk footer agar tidak tertimpa navigation bar sistem
         val footer = findViewById<ConstraintLayout>(R.id.footer_container)
         ViewCompat.setOnApplyWindowInsetsListener(footer) { view, windowInsets ->
             val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -99,14 +148,11 @@ class home : AppCompatActivity() {
         }
 
         val bottomNavView = findViewById<BottomNavigationView>(R.id.bottom_nav_view)
-
-        // Atur item "Home" sebagai yang aktif secara default di halaman ini
         bottomNavView.selectedItemId = R.id.nav_home
 
-        // Atur listener untuk menangani klik pada setiap item navigasi
         bottomNavView.setOnItemSelectedListener { item ->
             when (item.itemId) {
-                R.id.nav_home -> true // Sudah di halaman ini, tidak melakukan apa-apa
+                R.id.nav_home -> true
                 R.id.nav_jadwal -> {
                     startActivity(Intent(this, JadwalActivity::class.java))
                     overridePendingTransition(0, 0)

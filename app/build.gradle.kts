@@ -31,8 +31,16 @@ android {
         targetCompatibility = JavaVersion.VERSION_1_8
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "1.8"}
+    buildFeatures {
+        viewBinding = true // Tambahkan ini jika Anda ingin menggunakan ViewBinding
     }
+
+    packaging {
+        resources {
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"}
+    }
+
 }
 
 dependencies {
@@ -43,9 +51,18 @@ dependencies {
     implementation("androidx.camera:camera-camera2:$cameraxVersion")
     implementation("androidx.camera:camera-lifecycle:$cameraxVersion")
     implementation("androidx.camera:camera-view:$cameraxVersion")
+    // Tambahkan di bagian dependencies
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+
+    implementation("com.squareup.okhttp3:logging-interceptor:4.11.0")
 
     // ML Kit Barcode Scanning
     implementation("com.google.mlkit:barcode-scanning:17.2.0")
+    
+    // Glide
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

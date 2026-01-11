@@ -15,6 +15,7 @@ import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.example.studysynaps.models.SessionManager
 
 class ProfileActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,6 +27,7 @@ class ProfileActivity : AppCompatActivity() {
         setContentView(R.layout.activity_profile)
 
         setupEdgeToEdge()
+        setupUserData() // Init User Data
         setupMenu()
         setupFooter()
     }
@@ -38,16 +40,31 @@ class ProfileActivity : AppCompatActivity() {
         }
     }
 
+    private fun setupUserData() {
+        val sessionManager = SessionManager(this)
+        val tvName = findViewById<TextView>(R.id.tv_profile_name)
+        // Tambahkan ID tv_profile_nim di XML jika belum ada, atau gunakan subtitle
+        
+        val name = sessionManager.getUserName() ?: "Mahasiswa"
+        val nim = sessionManager.getUserNim() ?: ""
+        val prodi = sessionManager.getUserProdi() ?: ""
+
+        tvName.text = name
+        // Jika mau menampilkan NIM/Prodi, kita perlu TextView tambahan di XML
+    }
+
     private fun setupMenu() {
+        val sessionManager = SessionManager(this)
+
         // Panggil fungsi untuk setiap item menu
         setupMenuItem(
             view = findViewById(R.id.menu_detail_profile),
             iconResId = R.drawable.ic_profile,
             title = "Detail Profile",
-            subtitle = "Information Account"
+            subtitle = "${sessionManager.getUserNim()} - ${sessionManager.getUserProdi()}"
         ) {
-            // Aksi saat diklik
-            Toast.makeText(this, "Detail Profile diklik", Toast.LENGTH_SHORT).show()
+             // Bisa diarahkan ke halaman edit profile nanti
+             Toast.makeText(this, "NIM: ${sessionManager.getUserNim()}", Toast.LENGTH_SHORT).show()
         }
 
         setupMenuItem(
@@ -56,7 +73,7 @@ class ProfileActivity : AppCompatActivity() {
             title = "Privacy Account",
             subtitle = "Edit Account"
         ) {
-            Toast.makeText(this, "Privacy Account diklik", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Feature coming soon", Toast.LENGTH_SHORT).show()
         }
 
         setupMenuItem(
@@ -92,11 +109,12 @@ class ProfileActivity : AppCompatActivity() {
         logoutIcon.setColorFilter(ContextCompat.getColor(this, android.R.color.holo_red_dark))
 
         logoutView.setOnClickListener {
-            // Kembali ke halaman Login tanpa animasi
+            // Logout User & Clear Session
+            sessionManager.clearSession()
             val intent = Intent(this, LoginOrRegist::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
-            overridePendingTransition(0, 0)
+            finishAffinity() // Tutup semua activity
         }
     }
 

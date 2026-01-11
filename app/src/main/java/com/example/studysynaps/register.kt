@@ -48,11 +48,39 @@ class register : AppCompatActivity() {
         }
 
         val btnSignUp = findViewById<Button>(R.id.btn_signup)
+        val etFullname = findViewById<android.widget.EditText>(R.id.et_fullname)
+        val etEmail = findViewById<android.widget.EditText>(R.id.et_email)
+        val etPassword = findViewById<android.widget.EditText>(R.id.et_password)
+        val etNim = findViewById<android.widget.EditText>(R.id.et_nim)
+        val etProdi = findViewById<android.widget.EditText>(R.id.et_prodi)
+
         btnSignUp.setOnClickListener {
-            val intent = Intent(this, home::class.java)
-            startActivity(intent)
-            overridePendingTransition(0, 0)
-            finish()
+            val fullname = etFullname.text.toString().trim()
+            val email = etEmail.text.toString().trim()
+            val password = etPassword.text.toString().trim()
+            val nim = etNim.text.toString().trim()
+            val prodi = etProdi.text.toString().trim()
+
+            if (fullname.isEmpty() || email.isEmpty() || password.isEmpty() || nim.isEmpty()) {
+                android.widget.Toast.makeText(this, "Semua data harus diisi!", android.widget.Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            com.example.studysynaps.network.RetrofitClient.instance.register(fullname, email, password, nim, prodi).enqueue(object : retrofit2.Callback<com.example.studysynaps.models.ApiResponse<Any>> {
+                override fun onResponse(call: retrofit2.Call<com.example.studysynaps.models.ApiResponse<Any>>, response: retrofit2.Response<com.example.studysynaps.models.ApiResponse<Any>>) {
+                    if (response.isSuccessful && response.body()?.status == true) {
+                        android.widget.Toast.makeText(this@register, "Registrasi Berhasil! Silakan Login.", android.widget.Toast.LENGTH_LONG).show()
+                        val intent = Intent(this@register, Login::class.java)
+                        startActivity(intent)
+                        finish()
+                    } else {
+                        android.widget.Toast.makeText(this@register, "Gagal: ${response.body()?.message}", android.widget.Toast.LENGTH_SHORT).show()
+                    }
+                }
+                override fun onFailure(call: retrofit2.Call<com.example.studysynaps.models.ApiResponse<Any>>, t: Throwable) {
+                    android.widget.Toast.makeText(this@register, "Error: ${t.message}", android.widget.Toast.LENGTH_SHORT).show()
+                }
+            })
         }
 
         val btnLogin = findViewById<TextView>(R.id.tv_login_link)

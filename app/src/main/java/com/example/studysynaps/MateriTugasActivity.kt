@@ -15,7 +15,8 @@ import androidx.core.view.updatePadding
 class MateriTugasActivity : AppCompatActivity() {
 
     private lateinit var rvMateriTugas: RecyclerView
-    private lateinit var adapter: MateriTugasAdapter
+    private lateinit var adapterTugas: AdapterTugas // Adapter Tugas Baru
+    private lateinit var adapterMateri: AdapterMateri // Adapter Materi
     private lateinit var btnMateri: AppCompatButton
     private lateinit var btnTugas: AppCompatButton
 
@@ -50,8 +51,9 @@ class MateriTugasActivity : AppCompatActivity() {
 
     private fun setupRecyclerView() {
         rvMateriTugas.layoutManager = LinearLayoutManager(this)
-        adapter = MateriTugasAdapter(emptyList())
-        rvMateriTugas.adapter = adapter
+        adapterTugas = AdapterTugas(emptyList())
+        adapterMateri = AdapterMateri(emptyList())
+        // Default show materi, so set adapterMateri later in showMateri()
     }
 
     private fun setupListeners() {
@@ -77,13 +79,29 @@ class MateriTugasActivity : AppCompatActivity() {
         btnTugas.setTextColor(Color.parseColor("#FFC107")) // Yellow/Gold
 
         // Update Data
-        val materiList = listOf(
-            MateriTugasItem("Fungsi Array dan Pointer", "", "Uplode 15 Oktober 2025", ItemType.MATERI),
-            MateriTugasItem("Penerapan Pointer", "", "Uplode 15 Oktober 2025", ItemType.MATERI),
-            MateriTugasItem("Fungsi Array dan Pointer", "", "Uplode 15 Oktober 2025", ItemType.MATERI),
-            MateriTugasItem("Fungsi Array dan Pointer", "", "Uplode 15 Oktober 2025", ItemType.MATERI)
-        )
-        adapter.updateData(materiList)
+        // Update Data (Ambil dari API)
+        rvMateriTugas.adapter = adapterMateri // Switch Adapter
+        
+        com.example.studysynaps.network.RetrofitClient.instance.getMaterials().enqueue(object : retrofit2.Callback<com.example.studysynaps.models.ApiResponse<List<com.example.studysynaps.models.Material>>> {
+            override fun onResponse(
+                call: retrofit2.Call<com.example.studysynaps.models.ApiResponse<List<com.example.studysynaps.models.Material>>>,
+                response: retrofit2.Response<com.example.studysynaps.models.ApiResponse<List<com.example.studysynaps.models.Material>>>
+            ) {
+                if (response.isSuccessful) {
+                    val materials = response.body()?.data ?: emptyList()
+                    adapterMateri.updateData(materials)
+                } else {
+                    android.widget.Toast.makeText(this@MateriTugasActivity, "Gagal mengambil data", android.widget.Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(
+                call: retrofit2.Call<com.example.studysynaps.models.ApiResponse<List<com.example.studysynaps.models.Material>>>,
+                t: Throwable
+            ) {
+                android.widget.Toast.makeText(this@MateriTugasActivity, "Error: ${t.message}", android.widget.Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 
     private fun showTugas() {
@@ -95,12 +113,23 @@ class MateriTugasActivity : AppCompatActivity() {
         btnMateri.setTextColor(Color.parseColor("#FFC107"))
 
         // Update Data
-        val tugasList = listOf(
-            MateriTugasItem("Tugas praktikum 1", "Tenggat 15 Oktober 2025", "Uplode 15 Oktober 2025", ItemType.TUGAS),
-            MateriTugasItem("Tugas 2 Array", "Tenggat 15 Oktober 2025", "Uplode 15 Oktober 2025", ItemType.TUGAS),
-            MateriTugasItem("Tugas 3 Array", "Tenggat 15 Oktober 2025", "Uplode 15 Oktober 2025", ItemType.TUGAS),
-            MateriTugasItem("Tugas Array dan Pointer", "Tenggat 25 Oktober 2025", "Uplode 15 Oktober 2025", ItemType.TUGAS)
-        )
-        adapter.updateData(tugasList)
+        rvMateriTugas.adapter = adapterTugas // Switch adapter
+        
+        com.example.studysynaps.network.RetrofitClient.instance.getAssignments().enqueue(object : retrofit2.Callback<com.example.studysynaps.models.ApiResponse<List<com.example.studysynaps.models.Assignment>>> {
+            override fun onResponse(
+                call: retrofit2.Call<com.example.studysynaps.models.ApiResponse<List<com.example.studysynaps.models.Assignment>>>,
+                response: retrofit2.Response<com.example.studysynaps.models.ApiResponse<List<com.example.studysynaps.models.Assignment>>>
+            ) {
+                if (response.isSuccessful) {
+                    val assignments = response.body()?.data ?: emptyList()
+                    adapterTugas.updateData(assignments)
+                } else {
+                    android.widget.Toast.makeText(this@MateriTugasActivity, "Gagal mengambil tugas", android.widget.Toast.LENGTH_SHORT).show()
+                }
+            }
+            override fun onFailure(call: retrofit2.Call<com.example.studysynaps.models.ApiResponse<List<com.example.studysynaps.models.Assignment>>>, t: Throwable) {
+                android.widget.Toast.makeText(this@MateriTugasActivity, "Error: ${t.message}", android.widget.Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 }

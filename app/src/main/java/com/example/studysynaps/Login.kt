@@ -41,11 +41,45 @@ class Login : AppCompatActivity() {
         }
 
         val btnLogin = findViewById<Button>(R.id.btn_login)
+        val etEmail = findViewById<android.widget.EditText>(R.id.et_email)
+        val etPassword = findViewById<android.widget.EditText>(R.id.et_password)
+
         btnLogin.setOnClickListener {
-            val intent = Intent(this, home::class.java)
-            startActivity(intent)
-            overridePendingTransition(0, 0)
-            finish()
+            val email = etEmail.text.toString().trim()
+            val password = etPassword.text.toString().trim()
+
+            if (email.isEmpty() || password.isEmpty()) {
+                android.widget.Toast.makeText(this, "Email dan Password harus diisi", android.widget.Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            com.example.studysynaps.network.RetrofitClient.instance.login(email, password).enqueue(object : retrofit2.Callback<com.example.studysynaps.models.AuthResponse> {
+                override fun onResponse(call: retrofit2.Call<com.example.studysynaps.models.AuthResponse>, response: retrofit2.Response<com.example.studysynaps.models.AuthResponse>) {
+                    if (response.isSuccessful && response.body()?.status == true) {
+                        val user = response.body()?.data
+                        // Simpan Session
+                        val sessionManager = com.example.studysynaps.models.SessionManager(this@Login)
+                        sessionManager.createLoginSession(
+                            user?.id?.toString() ?: "0", 
+                            user?.fullname ?: "", 
+                            user?.email ?: "",
+                            user?.nim ?: "-",
+                            user?.prodi ?: "-"
+                        )
+
+                        android.widget.Toast.makeText(this@Login, "Login Berhasil!", android.widget.Toast.LENGTH_SHORT).show()
+                        val intent = Intent(this@Login, home::class.java)
+                        startActivity(intent)
+                        overridePendingTransition(0, 0)
+                        finish()
+                    } else {
+                        android.widget.Toast.makeText(this@Login, "Login Gagal: ${response.body()?.message}", android.widget.Toast.LENGTH_SHORT).show()
+                    }
+                }
+                override fun onFailure(call: retrofit2.Call<com.example.studysynaps.models.AuthResponse>, t: Throwable) {
+                    android.widget.Toast.makeText(this@Login, "Error: ${t.message}", android.widget.Toast.LENGTH_SHORT).show()
+                }
+            })
         }
 
         setupListeners()
