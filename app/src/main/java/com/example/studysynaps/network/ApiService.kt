@@ -5,8 +5,9 @@ import com.example.studysynaps.models.ApiResponse
 import com.example.studysynaps.models.Assignment
 import com.example.studysynaps.models.AuthResponse
 import com.example.studysynaps.models.Material
-import com.example.studysynaps.models.Course // Import
-import com.example.studysynaps.models.ScheduleItem // Import
+import com.example.studysynaps.models.Course
+import com.example.studysynaps.models.ScheduleItem
+import com.example.studysynaps.PresensiItem // Import Added
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
@@ -53,10 +54,37 @@ interface ApiService {
     fun getMySchedule(@Query("user_id") userId: String): Call<ApiResponse<List<ScheduleItem>>>
 
     @GET("schedule/today")
-    fun getTodaySchedule(@Query("user_id") userId: String): Call<ApiResponse<List<ScheduleItem>>>
+    fun getTodaySchedule(
+        @Query("user_id") userId: String,
+        @Query("day") day: String
+    ): Call<ApiResponse<List<ScheduleItem>>>
+
+    @GET("attendance/summary")
+    fun getAttendanceSummary(
+        @Query("user_id") userId: String
+    ): Call<ApiResponse<List<PresensiItem>>>
+
+    @FormUrlEncoded
+    @POST("attendance/scan")
+    fun submitScan(
+        @Field("user_id") userId: String,
+        @Field("qr_content") qrContent: String
+    ): Call<ApiResponse<Any>>
 
     @POST("activity")
     fun submitActivity(@Body request: ActivityRequest): Call<ApiResponse<Any>>
+
+    // --- PAYMENT ---
+
+    @GET("payment/info")
+    fun getBillingInfo(@Query("user_id") userId: String): Call<ApiResponse<com.example.studysynaps.models.Billing>>
+
+    @FormUrlEncoded
+    @POST("payment/pay")
+    fun payBill(
+        @Field("user_id") userId: String,
+        @Field("type") type: String // 'full' or 'dispensasi'
+    ): Call<ApiResponse<Any>>
 
     @FormUrlEncoded
     @POST("account/login")
@@ -74,4 +102,11 @@ interface ApiService {
         @Field("nim") nim: String,
         @Field("prodi") prodi: String
     ): Call<ApiResponse<Any>>
+
+    @Multipart
+    @POST("account/upload_photo")
+    fun uploadPhoto(
+        @Part("user_id") userId: RequestBody,
+        @Part photo: MultipartBody.Part
+    ): Call<com.example.studysynaps.models.ApiResponse<Any>>
 }

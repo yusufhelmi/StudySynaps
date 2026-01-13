@@ -43,10 +43,45 @@ class ScanKodeFragment : Fragment() {
                 etKodePresensi.error = "Kode tidak boleh kosong"
             } else {
                 // Jika kode terisi, proses presensi
-                // (Untuk saat ini kita hanya tampilkan Toast)
-                Toast.makeText(requireContext(), "Presensi dengan kode: $kode", Toast.LENGTH_LONG).show()
+                // Format sesuai backend: "COURSE:[KODE]"
+                val qrContent = if (kode.startsWith("COURSE:")) kode else "COURSE:$kode"
+                
+                val session = com.example.studysynaps.models.SessionManager(requireContext())
+                val userId = session.getUserId()
 
-                // Nanti di sini Anda bisa menambahkan logika untuk mengirim kode ke server
+                if (userId != null) {
+                    com.example.studysynaps.network.RetrofitClient.instance.submitScan(userId, qrContent)
+                        .enqueue(object : retrofit2.Callback<com.example.studysynaps.models.ApiResponse<Any>> {
+                            override fun onResponse(
+                                call: retrofit2.Call<com.example.studysynaps.models.ApiResponse<Any>>,
+                                response: retrofit2.Response<com.example.studysynaps.models.ApiResponse<Any>>
+                            ) {
+                                if (response.isSuccessful && response.body()?.status == true) {
+                                    Toast.makeText(requireContext(), response.body()?.message, Toast.LENGTH_LONG).show()
+                                    etKodePresensi.text?.clear()
+                                } else {
+                                    // Parse Error Body untuk HTTP 4xx/5xx
+                                    val errorJson = response.errorBody()?.string()
+                                    val msg = try {
+                                        val jsonObject = org.json.JSONObject(errorJson)
+                                        jsonObject.getString("message")
+                                    } catch (e: Exception) {
+                                        "Gagal presensi (Code: ${response.code()})"
+                                    }
+                                    Toast.makeText(requireContext(), msg, Toast.LENGTH_LONG).show()
+                                }
+                            }
+
+                            override fun onFailure(
+                                call: retrofit2.Call<com.example.studysynaps.models.ApiResponse<Any>>,
+                                t: Throwable
+                            ) {
+                                Toast.makeText(requireContext(), "Error: ${t.message}", Toast.LENGTH_SHORT).show()
+                            }
+                        })
+                } else {
+                    Toast.makeText(requireContext(), "User tidak ditemukan", Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }

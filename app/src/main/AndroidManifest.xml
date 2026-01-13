@@ -36,6 +36,18 @@
             android:name=".ScanActivity"
             android:exported="false" />
         <activity
+            android:name=".DetailProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PrivacyAccountActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UpdatePhotoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".HelpCenterActivity"
+            android:exported="false" />
+        <activity
             android:name=".JadwalActivity"
             android:exported="false" />
         <activity
@@ -79,6 +91,10 @@
 
         <activity
             android:name=".PrivacyPolicyActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".PaymentActivity"
             android:exported="false" />
 
         <activity

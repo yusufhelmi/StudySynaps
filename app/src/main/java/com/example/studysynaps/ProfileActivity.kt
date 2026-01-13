@@ -11,31 +11,37 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
-import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import androidx.core.view.WindowCompat
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.studysynaps.models.SessionManager
+import com.example.studysynaps.network.RetrofitClient
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class ProfileActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        // Atur icon status bar menjadi gelap (karena background atas putih)
         WindowCompat.getInsetsController(window, window.decorView).isAppearanceLightStatusBars = true
 
         setContentView(R.layout.activity_profile)
 
         setupEdgeToEdge()
-        setupUserData() // Init User Data
+        // Data populated in onResume to ensure updates match
         setupMenu()
         setupFooter()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setupUserData()
     }
 
     private fun setupEdgeToEdge() {
         val contentContainer: ConstraintLayout = findViewById(R.id.content_container)
         ViewCompat.setOnApplyWindowInsetsListener(contentContainer) { view, insets ->
-            // Kita hanya butuh padding bawah untuk footer, jadi untuk konten utama tidak perlu padding atas
             insets
         }
     }
@@ -43,14 +49,33 @@ class ProfileActivity : AppCompatActivity() {
     private fun setupUserData() {
         val sessionManager = SessionManager(this)
         val tvName = findViewById<TextView>(R.id.tv_profile_name)
-        // Tambahkan ID tv_profile_nim di XML jika belum ada, atau gunakan subtitle
+        val ivProfile = findViewById<ImageView>(R.id.iv_profile_picture)
         
         val name = sessionManager.getUserName() ?: "Mahasiswa"
-        val nim = sessionManager.getUserNim() ?: ""
-        val prodi = sessionManager.getUserProdi() ?: ""
-
         tvName.text = name
-        // Jika mau menampilkan NIM/Prodi, kita perlu TextView tambahan di XML
+
+        // Load Photo with Glide
+        var photoUrl = sessionManager.getUserPhoto()
+        if (!photoUrl.isNullOrEmpty()) {
+            // Fix URL if it's relative or pointing to wrong IP
+            // Don't touch if it's http, https, content://, or file://
+            if (!photoUrl.startsWith("http") && !photoUrl.startsWith("content") && !photoUrl.startsWith("file")) {
+                val baseUrl = RetrofitClient.BASE_URL.replace("index.php/", "")
+                photoUrl = "$baseUrl$photoUrl"
+            }
+            
+            // DEBUG: Show URL
+            // Toast.makeText(this, "Load: $photoUrl", Toast.LENGTH_LONG).show()
+            
+            Glide.with(this)
+                .load(photoUrl)
+                .placeholder(R.drawable.cristiano_ronaldo) 
+                .error(R.drawable.cristiano_ronaldo) 
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(ivProfile)
+        } else {
+             ivProfile.setImageResource(R.drawable.cristiano_ronaldo)
+        }
     }
 
     private fun setupMenu() {
@@ -63,8 +88,7 @@ class ProfileActivity : AppCompatActivity() {
             title = "Detail Profile",
             subtitle = "${sessionManager.getUserNim()} - ${sessionManager.getUserProdi()}"
         ) {
-             // Bisa diarahkan ke halaman edit profile nanti
-             Toast.makeText(this, "NIM: ${sessionManager.getUserNim()}", Toast.LENGTH_SHORT).show()
+             startActivity(Intent(this, DetailProfileActivity::class.java))
         }
 
         setupMenuItem(
@@ -73,7 +97,7 @@ class ProfileActivity : AppCompatActivity() {
             title = "Privacy Account",
             subtitle = "Edit Account"
         ) {
-            Toast.makeText(this, "Feature coming soon", Toast.LENGTH_SHORT).show()
+            startActivity(Intent(this, PrivacyAccountActivity::class.java))
         }
 
         setupMenuItem(
@@ -82,7 +106,7 @@ class ProfileActivity : AppCompatActivity() {
             title = "Help Center",
             subtitle = "Information Details"
         ) {
-            Toast.makeText(this, "Help Center diklik", Toast.LENGTH_SHORT).show()
+            startActivity(Intent(this, HelpCenterActivity::class.java))
         }
 
         setupMenuItem(
@@ -91,7 +115,6 @@ class ProfileActivity : AppCompatActivity() {
             title = "Privacy Policy",
             subtitle = "Information Details"
         ) {
-            // Navigasi ke PrivacyPolicyActivity tanpa animasi
             val intent = Intent(this, PrivacyPolicyActivity::class.java)
             startActivity(intent)
             overridePendingTransition(0, 0)
@@ -109,16 +132,14 @@ class ProfileActivity : AppCompatActivity() {
         logoutIcon.setColorFilter(ContextCompat.getColor(this, android.R.color.holo_red_dark))
 
         logoutView.setOnClickListener {
-            // Logout User & Clear Session
             sessionManager.clearSession()
             val intent = Intent(this, LoginOrRegist::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
-            finishAffinity() // Tutup semua activity
+            finishAffinity() 
         }
     }
 
-    // Fungsi bantuan untuk mengurangi duplikasi kode
     private fun setupMenuItem(view: View, iconResId: Int, title: String, subtitle: String, onClick: () -> Unit) {
         view.findViewById<ImageView>(R.id.iv_menu_icon).setImageResource(iconResId)
         view.findViewById<TextView>(R.id.tv_menu_title).text = title
@@ -127,7 +148,6 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     private fun setupFooter() {
-        // Logika untuk footer
         val footer = findViewById<ConstraintLayout>(R.id.footer_container)
         ViewCompat.setOnApplyWindowInsetsListener(footer) { view, windowInsets ->
             val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -136,7 +156,7 @@ class ProfileActivity : AppCompatActivity() {
         }
 
         val bottomNavView = findViewById<BottomNavigationView>(R.id.bottom_nav_view)
-        bottomNavView.selectedItemId = R.id.nav_profil // Set "Profil" sebagai item aktif
+        bottomNavView.selectedItemId = R.id.nav_profil
 
         bottomNavView.setOnItemSelectedListener { item ->
             when (item.itemId) {
@@ -160,7 +180,7 @@ class ProfileActivity : AppCompatActivity() {
                     overridePendingTransition(0, 0)
                     true
                 }
-                R.id.nav_profil -> true // Sudah di halaman ini
+                R.id.nav_profil -> true
                 else -> {
                     Toast.makeText(this, "Menu belum tersedia", Toast.LENGTH_SHORT).show()
                     false

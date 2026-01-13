@@ -105,7 +105,12 @@ class SplashActivity : AppCompatActivity() {
             masterSet.addListener(object : android.animation.AnimatorListenerAdapter() {
                 override fun onAnimationEnd(animation: android.animation.Animator) {
                     Handler(Looper.getMainLooper()).postDelayed({
-                        startActivity(Intent(this@SplashActivity, IntroScreen1::class.java))
+                        val sessionManager = com.example.studysynaps.models.SessionManager(this@SplashActivity)
+                        if (sessionManager.isLoggedIn()) {
+                            startActivity(Intent(this@SplashActivity, home::class.java))
+                        } else {
+                            startActivity(Intent(this@SplashActivity, IntroScreen1::class.java))
+                        }
                         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
                         finish()
                     }, 500) // Hold for 0.5s

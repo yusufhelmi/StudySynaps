@@ -250,19 +250,24 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/btn_pembayaran"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
                     android:gravity="center"
                     android:orientation="vertical"
-                    android:padding="8dp">
+                    android:padding="8dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true">
 
                     <ImageView
                         android:layout_width="60dp"
                         android:layout_height="60dp"
                         android:background="@drawable/menu_item_bg"
                         android:padding="10dp"
-                        android:src="@drawable/pembayaran" />
+                        android:src="@drawable/pembayaran"
+                        />
 
                     <TextView
                         android:layout_width="wrap_content"

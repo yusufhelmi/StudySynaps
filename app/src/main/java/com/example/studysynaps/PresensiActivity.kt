@@ -33,18 +33,34 @@ class PresensiActivity : AppCompatActivity() {
     private fun setupRecyclerView() {
         val rvPresensi = findViewById<RecyclerView>(R.id.rv_presensi)
         rvPresensi.layoutManager = LinearLayoutManager(this)
+        
+        // Fetch Real Data
+        val session = com.example.studysynaps.models.SessionManager(this)
+        val userId = session.getUserId()
 
-        // Dummy data based on the user's request/image
-        val presensiList = listOf(
-            PresensiItem("Bahasa Pemrograman II", "SISI06 2 SKS", 8),
-            PresensiItem("Struktur Data", "SISI06 2 SKS", 6),
-            PresensiItem("Manajemen Finansial", "SISI06 2 SKS", 6),
-            PresensiItem("Success Skill", "SISI06 2 SKS", 6),
-            PresensiItem("Sistem Basis Data", "SISI06 2 SKS", 7)
-        )
+        if (userId != null) {
+            com.example.studysynaps.network.RetrofitClient.instance.getAttendanceSummary(userId)
+                .enqueue(object : retrofit2.Callback<com.example.studysynaps.models.ApiResponse<List<PresensiItem>>> {
+                    override fun onResponse(
+                        call: retrofit2.Call<com.example.studysynaps.models.ApiResponse<List<PresensiItem>>>,
+                        response: retrofit2.Response<com.example.studysynaps.models.ApiResponse<List<PresensiItem>>>
+                    ) {
+                        if (response.isSuccessful && response.body()?.status == true) {
+                            val list = response.body()?.data ?: emptyList()
+                            rvPresensi.adapter = PresensiAdapter(list)
+                        } else {
+                            android.widget.Toast.makeText(this@PresensiActivity, "Gagal memuat presensi", android.widget.Toast.LENGTH_SHORT).show()
+                        }
+                    }
 
-        val adapter = PresensiAdapter(presensiList)
-        rvPresensi.adapter = adapter
+                    override fun onFailure(
+                        call: retrofit2.Call<com.example.studysynaps.models.ApiResponse<List<PresensiItem>>>,
+                        t: Throwable
+                    ) {
+                        android.widget.Toast.makeText(this@PresensiActivity, "Error: ${t.message}", android.widget.Toast.LENGTH_SHORT).show()
+                    }
+                })
+        }
     }
 
     private fun setupBackButton() {

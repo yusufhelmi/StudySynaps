@@ -108,12 +108,15 @@ class ScanQrFragment : Fragment() {
                                 barcodeScanner.process(image)
                                     .addOnSuccessListener { barcodes ->
                                         if (barcodes.isNotEmpty()) {
+                                            // Stop scanner temporarily
                                             cameraExecutor.shutdown()
+                                            
                                             val barcode = barcodes.first()
-                                            val rawValue = barcode.rawValue
-                                            Log.d("ScanQrFragment", "QR Code terdeteksi: $rawValue")
+                                            val rawValue = barcode.rawValue ?: ""
+                                            Log.d("ScanQrFragment", "QR Code: $rawValue")
+                                            
                                             activity?.runOnUiThread {
-                                                Toast.makeText(requireContext(), "QR Code: $rawValue", Toast.LENGTH_LONG).show()
+                                                processQrCode(rawValue)
                                             }
                                         }
                                     }
@@ -124,7 +127,7 @@ class ScanQrFragment : Fragment() {
                                         imageProxy.close()
                                     }
                             } catch (e: Exception) {
-                                Log.e("ScanQrFragment", "Error saat membuat InputImage", e)
+                                Log.e("ScanQrFragment", "Error", e)
                                 imageProxy.close()
                             }
                         }
@@ -141,6 +144,35 @@ class ScanQrFragment : Fragment() {
                 Log.e("ScanQrFragment", "Gagal mengikat use case kamera", exc)
             }
         }, ContextCompat.getMainExecutor(requireContext()))
+    }
+
+    private fun processQrCode(qrContent: String) {
+        val session = com.example.studysynaps.models.SessionManager(requireContext())
+        val userId = session.getUserId() ?: return
+
+        com.example.studysynaps.network.RetrofitClient.instance.submitScan(userId, qrContent)
+            .enqueue(object : retrofit2.Callback<com.example.studysynaps.models.ApiResponse<Any>> {
+                override fun onResponse(
+                    call: retrofit2.Call<com.example.studysynaps.models.ApiResponse<Any>>,
+                    response: retrofit2.Response<com.example.studysynaps.models.ApiResponse<Any>>
+                ) {
+                    if (response.isSuccessful && response.body()?.status == true) {
+                        Toast.makeText(requireContext(), response.body()?.message, Toast.LENGTH_LONG).show()
+                        // Optional: Navigate away or restart camera
+                    } else {
+                        val msg = response.body()?.message ?: "Gagal presensi"
+                        Toast.makeText(requireContext(), msg, Toast.LENGTH_LONG).show()
+                        // Restart Camera Logic if needed (requires re-init executor)
+                    }
+                }
+
+                override fun onFailure(
+                    call: retrofit2.Call<com.example.studysynaps.models.ApiResponse<Any>>,
+                    t: Throwable
+                ) {
+                    Toast.makeText(requireContext(), "Error: ${t.message}", Toast.LENGTH_SHORT).show()
+                }
+            })
     }
 
     override fun onDestroyView() {

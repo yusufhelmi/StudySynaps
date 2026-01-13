@@ -9,6 +9,9 @@ data class ScheduleItem(
     @SerializedName("course_name")
     val courseName: String,
 
+    @SerializedName("lecturer_name")
+    val lecturerName: String?,
+
     @SerializedName("day")
     val day: String,
 

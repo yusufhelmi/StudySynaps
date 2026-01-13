@@ -4,8 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="12dp"
+    android:layout_marginEnd="16dp"
     app:cardCornerRadius="12dp"
-    app:cardElevation="3dp"
+    app:cardElevation="0dp"
+    app:strokeColor="#6B7280"
+    app:strokeWidth="1dp"
     app:cardBackgroundColor="@android:color/white">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -13,97 +16,84 @@
         android:layout_height="wrap_content"
         android:padding="16dp">
 
-        <!-- COLOR STRIP START -->
-        <View
-            android:id="@+id/view_color_strip"
-            android:layout_width="4dp"
-            android:layout_height="0dp"
-            android:background="#2563EB"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+        <!-- TYPE BADGE (Top Right) -->
+        <TextView
+            android:id="@+id/tv_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Praktikum"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:background="@drawable/bg_badge_orange"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="4dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
 
-        <!-- TIME -->
+        <!-- LECTURER NAME (Below Badge level effectively, or Top Left) -->
+        <TextView
+            android:id="@+id/tv_lecturer"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Ninik Tri Hartanti, S.Kom., M.kom."
+            android:textSize="14sp"
+            android:textColor="#374151"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/tv_type"
+            app:layout_constraintTop_toBottomOf="@id/tv_type"
+            app:layout_goneMarginTop="16dp"/>
+
+        <!-- COURSE NAME -->
+        <TextView
+            android:id="@+id/tv_matkul"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="STRUKTUR DATA"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textColor="#000000"
+            android:layout_marginTop="4dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_lecturer"/>
+
+        <!-- TIME (Bottom Left) -->
         <TextView
             android:id="@+id/tv_jam_mulai"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:text="07:00"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:textColor="#1F2937"
-            app:layout_constraintStart_toEndOf="@id/view_color_strip"
-            app:layout_constraintTop_toTopOf="parent"/>
+            android:text="10.40"
+            android:textSize="14sp"
+            android:textColor="#000000"
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_matkul"/>
 
         <TextView
             android:id="@+id/tv_jam_selesai"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="- 08:40"
+            android:text=" - 12.20"
             android:textSize="14sp"
-            android:textColor="#6B7280"
-            android:layout_marginStart="4dp"
+            android:textColor="#000000"
             app:layout_constraintStart_toEndOf="@id/tv_jam_mulai"
-            app:layout_constraintBottom_toBottomOf="@id/tv_jam_mulai"
-            app:layout_constraintTop_toTopOf="@id/tv_jam_mulai"/>
+            app:layout_constraintBottom_toBottomOf="@id/tv_jam_mulai"/>
 
-        <!-- SUBJECT NAME -->
+        <!-- ROOM (Bottom Right) -->
         <TextView
-            android:id="@+id/tv_matkul"
-            android:layout_width="0dp"
+            android:id="@+id/tv_room"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="8dp"
-            android:text="STRUKTUR DATA"
-            android:textStyle="bold"
-            android:textSize="16sp"
-            android:textColor="#111827"
-            app:layout_constraintStart_toEndOf="@id/view_color_strip"
+            android:text="L 2.4.1"
+            android:textSize="14sp"
+            android:textColor="#000000"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_jam_mulai"/>
-
-        <!-- DETAILS ROW -->
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="8dp"
-            android:layout_marginStart="12dp"
-            app:layout_constraintTop_toBottomOf="@id/tv_matkul"
-            app:layout_constraintStart_toEndOf="@id/view_color_strip"
-            app:layout_constraintEnd_toEndOf="parent">
-
-            <!-- TYPE BADGE -->
-            <TextView
-                android:id="@+id/tv_type"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Teori"
-                android:textSize="12sp"
-                android:textColor="#2563EB"
-                android:background="@drawable/bg_badge_blue_soft"
-                android:paddingHorizontal="8dp"
-                android:paddingVertical="2dp"
-                android:layout_marginEnd="8dp"/>
-
-            <!-- ROOM -->
-            <ImageView
-                android:layout_width="14dp"
-                android:layout_height="14dp"
-                android:src="@drawable/ic_location_on" 
-                android:layout_gravity="center_vertical"
-                app:tint="#6B7280"/>
-            
-            <TextView
-                android:id="@+id/tv_room"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Lab Komputer"
-                android:textSize="12sp"
-                android:textColor="#6B7280"
-                android:layout_marginStart="4dp"/>
-        </LinearLayout>
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_jam_mulai"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

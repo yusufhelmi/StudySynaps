@@ -12,5 +12,9 @@ data class UserData(
     val fullname: String,
     val email: String,
     val nim: String?,
-    val prodi: String?
+    val prodi: String?,
+    val status: String? = "active", // Default to active to avoid crash if null
+    @com.google.gson.annotations.SerializedName("payment_status")
+    val paymentStatus: String? = "unpaid",
+    val photo: String?
 )

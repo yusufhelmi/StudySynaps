@@ -64,7 +64,10 @@ class Login : AppCompatActivity() {
                             user?.fullname ?: "", 
                             user?.email ?: "",
                             user?.nim ?: "-",
-                            user?.prodi ?: "-"
+                            user?.prodi ?: "-",
+                            user?.status ?: "active",
+                            user?.paymentStatus ?: "unpaid",
+                            user?.photo
                         )
 
                         android.widget.Toast.makeText(this@Login, "Login Berhasil!", android.widget.Toast.LENGTH_SHORT).show()
