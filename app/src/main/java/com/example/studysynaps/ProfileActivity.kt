@@ -72,6 +72,7 @@ class ProfileActivity : AppCompatActivity() {
                 .placeholder(R.drawable.cristiano_ronaldo) 
                 .error(R.drawable.cristiano_ronaldo) 
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .signature(com.bumptech.glide.signature.ObjectKey(System.currentTimeMillis()))
                 .into(ivProfile)
         } else {
              ivProfile.setImageResource(R.drawable.cristiano_ronaldo)

@@ -77,20 +77,20 @@ class UpdatePhotoActivity : AppCompatActivity() {
                 ) {
                     progressBar.visibility = View.GONE
                     if (response.isSuccessful && response.body()?.status == true) {
-                        Toast.makeText(this@UpdatePhotoActivity, "Foto berhasil diupdate!", Toast.LENGTH_SHORT).show()
-                        
-                        // Save new URL if returned
-                        val newUrl = response.body()?.data?.toString()
-                        if (newUrl != null) {
-                            sessionManager.saveUserPhoto(newUrl)
-                            // Toast.makeText(this@UpdatePhotoActivity, "Saved Server Path", Toast.LENGTH_SHORT).show()
-                        } else {
-                            // Fallback: Save local URI as string temp
-                            sessionManager.saveUserPhoto(uri.toString())
-                            // Toast.makeText(this@UpdatePhotoActivity, "Saved Local URI", Toast.LENGTH_SHORT).show()
-                        }
-                        
-                        finish() // Close Activity
+                        // Show Dialog forcing re-login
+                        androidx.appcompat.app.AlertDialog.Builder(this@UpdatePhotoActivity)
+                            .setTitle("Berhasil Update")
+                            .setMessage("Foto profil berhasil diperbarui. Silakan login ulang untuk melihat perubahan.")
+                            .setPositiveButton("OK") { _, _ ->
+                                // Clear Session & Logout
+                                sessionManager.clearSession()
+                                val intent = android.content.Intent(this@UpdatePhotoActivity, LoginOrRegist::class.java)
+                                intent.flags = android.content.Intent.FLAG_ACTIVITY_NEW_TASK or android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                startActivity(intent)
+                                finishAffinity()
+                            }
+                            .setCancelable(false)
+                            .show()
                     } else {
                         // Parse error
                         val msg = try {

@@ -15,6 +15,8 @@ class KtmActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        // Set Status Bar Icons to White (Dark Background)
+        androidx.core.view.WindowCompat.getInsetsController(window, window.decorView).isAppearanceLightStatusBars = false
         setContentView(R.layout.activity_ktm)
 
         setupEdgeToEdge()
@@ -59,12 +61,28 @@ class KtmActivity : AppCompatActivity() {
             requestManager.load(photoUrl)
                 .placeholder(R.drawable.ic_profile_24)
                 .error(R.drawable.ic_profile_24)
+                .signature(com.bumptech.glide.signature.ObjectKey(System.currentTimeMillis()))
                 .into(ivSmall)
             
             requestManager.load(photoUrl)
                 .placeholder(R.drawable.ic_profile_24)
                 .error(R.drawable.ic_profile_24)
+                .signature(com.bumptech.glide.signature.ObjectKey(System.currentTimeMillis()))
                 .into(ivLarge)
+        }
+
+        // Generate QR Code
+        val ivQr = findViewById<android.widget.ImageView>(R.id.iv_qr_code)
+        // Ensure tint is null
+        ivQr.imageTintList = null
+        try {
+            // Using rawNim for the value, or formatted if preferred. User said "isinya adalah nim".
+            // rawNim is safer standard.
+            val qrContent = if (rawNim.isNotEmpty()) rawNim else "STUDYSYNAPS"
+            val qrBitmap = generateQRCode(qrContent)
+            ivQr.setImageBitmap(qrBitmap)
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 
@@ -95,6 +113,23 @@ class KtmActivity : AppCompatActivity() {
     private fun setupBackButton() {
         findViewById<ImageButton>(R.id.btn_back).setOnClickListener {
             finish()
+            finish()
         }
+    }
+
+    private fun generateQRCode(text: String): android.graphics.Bitmap {
+        val width = 500
+        val height = 500
+        val bitMatrix = com.google.zxing.MultiFormatWriter().encode(
+            text, com.google.zxing.BarcodeFormat.QR_CODE, width, height
+        )
+        val bitmap = android.graphics.Bitmap.createBitmap(width, height, android.graphics.Bitmap.Config.ARGB_8888)
+        for (x in 0 until width) {
+            for (y in 0 until height) {
+                 // 0xFF000000 is Black, 0xFFFFFFFF is White
+                bitmap.setPixel(x, y, if (bitMatrix[x, y]) android.graphics.Color.BLACK else android.graphics.Color.WHITE)
+            }
+        }
+        return bitmap
     }
 }
