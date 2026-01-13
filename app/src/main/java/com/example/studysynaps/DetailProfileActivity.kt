@@ -26,8 +26,19 @@ class DetailProfileActivity : AppCompatActivity() {
 
         // Set Data
         tvName.text = sessionManager.getUserName() ?: "Mahasiswa"
-        tvNim.text = sessionManager.getUserNim() ?: "-"
+        
+        // Format NIM xx.xx.xxxx
+        val rawNim = sessionManager.getUserNim() ?: ""
+        if (rawNim.length == 8 && rawNim.all { it.isDigit() }) {
+             tvNim.text = "${rawNim.substring(0, 2)}.${rawNim.substring(2, 4)}.${rawNim.substring(4)}"
+        } else {
+             tvNim.text = rawNim.ifEmpty { "-" }
+        }
+        
         tvProdi.text = sessionManager.getUserProdi() ?: "-"
+
+        // Fetch SKS
+        fetchTotalSks(sessionManager.getUserId(), findViewById(R.id.tv_detail_sks))
 
         // Photo with Glide
         var photoUrl = sessionManager.getUserPhoto()
@@ -49,5 +60,24 @@ class DetailProfileActivity : AppCompatActivity() {
         btnBack.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }
+    }
+    private fun fetchTotalSks(userId: String?, tvSks: TextView) {
+        if (userId == null) return
+
+        RetrofitClient.instance.getCourses(userId).enqueue(object : retrofit2.Callback<com.example.studysynaps.models.ApiResponse<List<com.example.studysynaps.models.Course>>> {
+            override fun onResponse(
+                call: retrofit2.Call<com.example.studysynaps.models.ApiResponse<List<com.example.studysynaps.models.Course>>>,
+                response: retrofit2.Response<com.example.studysynaps.models.ApiResponse<List<com.example.studysynaps.models.Course>>>
+            ) {
+                if (response.isSuccessful && response.body()?.status == true) {
+                    val courses = response.body()?.data ?: emptyList()
+                    val totalSks = courses.filter { it.isTaken == "1" }.sumOf { it.sks }
+                    tvSks.text = "$totalSks SKS"
+                }
+            }
+            override fun onFailure(call: retrofit2.Call<com.example.studysynaps.models.ApiResponse<List<com.example.studysynaps.models.Course>>>, t: Throwable) {
+                // Ignore error, keep default or "-"
+            }
+        })
     }
 }

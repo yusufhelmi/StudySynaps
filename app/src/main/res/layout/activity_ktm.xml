@@ -137,6 +137,7 @@
 
             <!-- Text Info -->
             <TextView
+                android:id="@+id/tv_ktm_details_small"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
@@ -322,6 +323,7 @@
 
                 <!-- Text Info -->
                 <TextView
+                    android:id="@+id/tv_ktm_details_large"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="40dp"

@@ -82,11 +82,19 @@ class ProfileActivity : AppCompatActivity() {
         val sessionManager = SessionManager(this)
 
         // Panggil fungsi untuk setiap item menu
+        
+        val rawNim = sessionManager.getUserNim() ?: ""
+        val formattedNim = if (rawNim.length == 8 && rawNim.all { it.isDigit() }) {
+             "${rawNim.substring(0, 2)}.${rawNim.substring(2, 4)}.${rawNim.substring(4)}"
+        } else {
+             rawNim
+        }
+        
         setupMenuItem(
             view = findViewById(R.id.menu_detail_profile),
             iconResId = R.drawable.ic_profile,
             title = "Detail Profile",
-            subtitle = "${sessionManager.getUserNim()} - ${sessionManager.getUserProdi()}"
+            subtitle = "$formattedNim - ${sessionManager.getUserProdi()}"
         ) {
              startActivity(Intent(this, DetailProfileActivity::class.java))
         }
