@@ -32,6 +32,7 @@ class ProfileActivity : AppCompatActivity() {
         // Data populated in onResume to ensure updates match
         setupMenu()
         setupFooter()
+        setupBackButton()
     }
 
     override fun onResume() {
@@ -40,10 +41,24 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     private fun setupEdgeToEdge() {
-        val contentContainer: ConstraintLayout = findViewById(R.id.content_container)
-        ViewCompat.setOnApplyWindowInsetsListener(contentContainer) { view, insets ->
-            insets
+        val mainView: View = findViewById(R.id.main)
+        ViewCompat.setOnApplyWindowInsetsListener(mainView) { view, windowInsets ->
+            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+            view.setPadding(insets.left, insets.top, insets.right, 0)
+            windowInsets
         }
+    }
+
+    private fun setupBackButton() {
+         findViewById<View>(R.id.btn_back).setOnClickListener {
+             // Profile is usually a "sibling" to Home, but if they want "Back", 
+             // maybe just finish() if it was opened from Home.
+             // If opened via BottomNav, finish() might exit app if it's task root.
+             // But consistent with user request:
+             startActivity(Intent(this, home::class.java))
+             overridePendingTransition(0, 0)
+             finish()
+         }
     }
 
     private fun setupUserData() {

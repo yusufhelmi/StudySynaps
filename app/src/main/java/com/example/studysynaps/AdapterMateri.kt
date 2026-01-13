@@ -34,20 +34,24 @@ class AdapterMateri(
 
         holder.tvTitle.text = item.title
         holder.tvCategory.text = item.category
-        holder.btnAdd.text = "Ambil Materi" // Ubah teks tombol
+        holder.btnAdd.text = "Buka Materi"
 
         // Load Image
         val imageUrl = "http://10.0.2.2/rest_api_synaps/uploads/${item.thumbnail}"
         Glide.with(holder.itemView.context)
             .load(imageUrl)
-            .placeholder(R.drawable.ic_launcher_background) // Placeholder standar
+            .placeholder(R.drawable.ic_launcher_background) 
             .into(holder.imgThumbnail)
 
         holder.btnAdd.setOnClickListener {
-            // Logic klik materi (misal: Buka Detail)
-            Toast.makeText(holder.itemView.context, "Membuka ${item.title}...", Toast.LENGTH_SHORT).show()
-            
-            // TODO: Tambahkan Intent ke Activity Detail di sini jika diperlukan
+            val url = item.fileUrl
+            if (url.isNotEmpty() && (url.startsWith("http://") || url.startsWith("https://"))) {
+                val intent = android.content.Intent(android.content.Intent.ACTION_VIEW)
+                intent.data = android.net.Uri.parse(url)
+                holder.itemView.context.startActivity(intent)
+            } else {
+                 Toast.makeText(holder.itemView.context, "Link materi tidak valid", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 

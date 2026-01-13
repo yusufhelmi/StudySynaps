@@ -58,7 +58,7 @@ class JadwalActivity : AppCompatActivity() {
                     allSchedules = response.body()?.data ?: emptyList()
                     // Default hari Senin
                     filterScheduleByDay("Senin")
-                    Toast.makeText(this@JadwalActivity, "Jadwal dimuat", Toast.LENGTH_SHORT).show()
+                    // Success toast removed
                 } else {
                     Toast.makeText(this@JadwalActivity, "Belum ada jadwal (Isi KRS dulu)", Toast.LENGTH_LONG).show()
                 }

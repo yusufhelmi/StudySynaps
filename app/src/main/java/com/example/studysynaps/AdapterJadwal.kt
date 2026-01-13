@@ -48,8 +48,16 @@ class AdapterJadwal(private var jadwalList: List<ScheduleItem>) :
             holder.tvType.setBackgroundResource(R.drawable.bg_badge_orange) // Orange Solid
             holder.tvType.setTextColor(Color.WHITE)
         } else {
-            holder.tvType.setBackgroundResource(R.drawable.bg_badge_blue_solid) // Blue Solid
             holder.tvType.setTextColor(Color.WHITE)
+        }
+
+        // Navigate to MateriTugasActivity
+        holder.itemView.setOnClickListener {
+            val intent = android.content.Intent(holder.itemView.context, MateriTugasActivity::class.java)
+            intent.putExtra("COURSE_NAME", item.courseName)
+            intent.putExtra("LECTURER_NAME", lecturer)
+            // intent.putExtra("COURSE_ID", item.id) // If ID is available
+            holder.itemView.context.startActivity(intent)
         }
     }
 

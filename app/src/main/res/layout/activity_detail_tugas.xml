@@ -7,13 +7,12 @@
     android:padding="24dp"
     android:background="#F8F9FA">
 
-    <!-- Header Back Button -->
     <ImageButton
         android:id="@+id/btn_back"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:background="?attr/selectableItemBackgroundBorderless"
-        android:src="@drawable/ic_launcher_foreground"
+        android:src="@drawable/ic_arrow_back"
         app:tint="#1F2937"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -120,9 +119,9 @@
                 android:orientation="vertical">
 
                 <ImageView
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:src="@drawable/ic_launcher_foreground"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="@drawable/ic_task"
                     app:tint="#9CA3AF"/>
 
                 <TextView

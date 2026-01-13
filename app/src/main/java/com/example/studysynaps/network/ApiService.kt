@@ -7,7 +7,10 @@ import com.example.studysynaps.models.AuthResponse
 import com.example.studysynaps.models.Material
 import com.example.studysynaps.models.Course
 import com.example.studysynaps.models.ScheduleItem
-import com.example.studysynaps.PresensiItem // Import Added
+import com.example.studysynaps.models.AttendanceLog
+import com.example.studysynaps.PresensiItem
+import com.example.studysynaps.models.ExamItem
+import com.example.studysynaps.models.GradeResponse // Added
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
@@ -25,10 +28,13 @@ interface ApiService {
     // --- Baru: Integrasi PizzaApp Logic ---
 
     @GET("materials")
-    fun getMaterials(): Call<ApiResponse<List<Material>>>
+    fun getMaterials(@Query("course_name") courseName: String): Call<ApiResponse<List<Material>>>
 
     @GET("assignments")
-    fun getAssignments(): Call<ApiResponse<List<Assignment>>>
+    fun getAssignments(
+        @Query("course_name") courseName: String,
+        @Query("user_id") userId: String
+    ): Call<ApiResponse<List<Assignment>>>
 
     @Multipart
     @POST("assignments/submit")
@@ -63,6 +69,28 @@ interface ApiService {
     fun getAttendanceSummary(
         @Query("user_id") userId: String
     ): Call<ApiResponse<List<PresensiItem>>>
+
+    @GET("attendance/history")
+    fun getAttendanceHistory(
+        @Query("user_id") userId: String,
+        @Query("course_id") courseId: String
+    ): Call<ApiResponse<List<AttendanceLog>>>
+
+    @GET("exam/schedule")
+    fun getExamSchedule(
+        @Query("user_id") userId: String
+    ): Call<ApiResponse<List<ExamItem>>>
+
+    @GET("grades/semester")
+    fun getSemesterGrades(
+        @Query("user_id") userId: String,
+        @Query("semester") semester: Int
+    ): Call<ApiResponse<GradeResponse>>
+
+    @GET("grades/transcript")
+    fun getTranscript(
+        @Query("user_id") userId: String
+    ): Call<ApiResponse<GradeResponse>>
 
     @FormUrlEncoded
     @POST("attendance/scan")

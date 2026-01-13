@@ -111,7 +111,7 @@ class KrsActivity : AppCompatActivity() {
                 if (response.isSuccessful && response.body()?.status == true) {
                     coursesList = response.body()?.data ?: emptyList()
                     krsAdapter.updateData(coursesList)
-                    Toast.makeText(this@KrsActivity, "Data KRS dimuat: ${coursesList.size} matkul", Toast.LENGTH_SHORT).show()
+                    // Success toast removed
                 } else {
                     Toast.makeText(this@KrsActivity, "Gagal memuat mata kuliah", Toast.LENGTH_SHORT).show()
                 }

@@ -19,6 +19,7 @@ class MateriTugasActivity : AppCompatActivity() {
     private lateinit var adapterMateri: AdapterMateri // Adapter Materi
     private lateinit var btnMateri: AppCompatButton
     private lateinit var btnTugas: AppCompatButton
+    private var courseName: String = "" // Default empty
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,6 +48,15 @@ class MateriTugasActivity : AppCompatActivity() {
         rvMateriTugas = findViewById(R.id.rv_materi_tugas)
         btnMateri = findViewById(R.id.btn_materi)
         btnTugas = findViewById(R.id.btn_tugas)
+        
+        // Populate Data from Intent
+        courseName = intent.getStringExtra("COURSE_NAME") ?: ""
+        val lecturerName = intent.getStringExtra("LECTURER_NAME") ?: "Dosen Pengampu"
+        
+        val displayCourse = if(courseName.isNotEmpty()) courseName else "Mata Kuliah"
+        
+        findViewById<android.widget.TextView>(R.id.tv_course_name).text = displayCourse
+        findViewById<android.widget.TextView>(R.id.tv_lecturer_name).text = lecturerName
     }
 
     private fun setupRecyclerView() {
@@ -82,7 +92,7 @@ class MateriTugasActivity : AppCompatActivity() {
         // Update Data (Ambil dari API)
         rvMateriTugas.adapter = adapterMateri // Switch Adapter
         
-        com.example.studysynaps.network.RetrofitClient.instance.getMaterials().enqueue(object : retrofit2.Callback<com.example.studysynaps.models.ApiResponse<List<com.example.studysynaps.models.Material>>> {
+        com.example.studysynaps.network.RetrofitClient.instance.getMaterials(courseName).enqueue(object : retrofit2.Callback<com.example.studysynaps.models.ApiResponse<List<com.example.studysynaps.models.Material>>> {
             override fun onResponse(
                 call: retrofit2.Call<com.example.studysynaps.models.ApiResponse<List<com.example.studysynaps.models.Material>>>,
                 response: retrofit2.Response<com.example.studysynaps.models.ApiResponse<List<com.example.studysynaps.models.Material>>>
@@ -91,7 +101,7 @@ class MateriTugasActivity : AppCompatActivity() {
                     val materials = response.body()?.data ?: emptyList()
                     adapterMateri.updateData(materials)
                 } else {
-                    android.widget.Toast.makeText(this@MateriTugasActivity, "Gagal mengambil data", android.widget.Toast.LENGTH_SHORT).show()
+                    // android.widget.Toast.makeText(this@MateriTugasActivity, "Gagal mengambil materi", android.widget.Toast.LENGTH_SHORT).show()
                 }
             }
 
@@ -114,8 +124,11 @@ class MateriTugasActivity : AppCompatActivity() {
 
         // Update Data
         rvMateriTugas.adapter = adapterTugas // Switch adapter
+
+        val session = com.example.studysynaps.models.SessionManager(this)
+        val userId = session.getUserId() ?: ""
         
-        com.example.studysynaps.network.RetrofitClient.instance.getAssignments().enqueue(object : retrofit2.Callback<com.example.studysynaps.models.ApiResponse<List<com.example.studysynaps.models.Assignment>>> {
+        com.example.studysynaps.network.RetrofitClient.instance.getAssignments(courseName, userId).enqueue(object : retrofit2.Callback<com.example.studysynaps.models.ApiResponse<List<com.example.studysynaps.models.Assignment>>> {
             override fun onResponse(
                 call: retrofit2.Call<com.example.studysynaps.models.ApiResponse<List<com.example.studysynaps.models.Assignment>>>,
                 response: retrofit2.Response<com.example.studysynaps.models.ApiResponse<List<com.example.studysynaps.models.Assignment>>>
@@ -124,7 +137,7 @@ class MateriTugasActivity : AppCompatActivity() {
                     val assignments = response.body()?.data ?: emptyList()
                     adapterTugas.updateData(assignments)
                 } else {
-                    android.widget.Toast.makeText(this@MateriTugasActivity, "Gagal mengambil tugas", android.widget.Toast.LENGTH_SHORT).show()
+                    // android.widget.Toast.makeText(this@MateriTugasActivity, "Gagal mengambil tugas", android.widget.Toast.LENGTH_SHORT).show()
                 }
             }
             override fun onFailure(call: retrofit2.Call<com.example.studysynaps.models.ApiResponse<List<com.example.studysynaps.models.Assignment>>>, t: Throwable) {

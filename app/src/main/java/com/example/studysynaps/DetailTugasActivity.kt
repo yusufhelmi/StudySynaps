@@ -55,24 +55,45 @@ class DetailTugasActivity : AppCompatActivity() {
         findViewById<ImageButton>(R.id.btn_back).setOnClickListener { finish() }
     }
 
+    private fun setupListeners() {
+        btnSelectFile.setOnClickListener {
+            if (btnSubmit.text == "Tugas Selesai") return@setOnClickListener
+            openFilePicker()
+        }
+
+        btnSubmit.setOnClickListener {
+            showConfirmationDialog()
+        }
+    }
+    
+    private fun showConfirmationDialog() {
+        androidx.appcompat.app.AlertDialog.Builder(this)
+            .setTitle("Kirim Tugas")
+            .setMessage("Anda hanya dapat mengirim tugas 1 kali. Pastikan file yang dipilih sudah benar. Lanjutkan?")
+            .setPositiveButton("Ya, Kirim") { _, _ ->
+                uploadFile()
+            }
+            .setNegativeButton("Batal", null)
+            .show()
+    }
+
     private fun setupData() {
         assignmentId = intent.getStringExtra("EXTRA_ID")
         val title = intent.getStringExtra("EXTRA_TITLE")
         val desc = intent.getStringExtra("EXTRA_DESC")
         val deadline = intent.getStringExtra("EXTRA_DEADLINE")
+        val isSubmitted = intent.getBooleanExtra("EXTRA_IS_SUBMITTED", false)
 
         tvTitle.text = title ?: "Detail Tugas"
         tvDescription.text = desc ?: "Tidak ada deskripsi"
         tvDeadline.text = "Deadline: ${deadline ?: "-"}"
-    }
-
-    private fun setupListeners() {
-        btnSelectFile.setOnClickListener {
-            openFilePicker()
-        }
-
-        btnSubmit.setOnClickListener {
-            uploadFile()
+        
+        if (isSubmitted) {
+            btnSubmit.text = "Tugas Selesai"
+            btnSubmit.isEnabled = false
+            btnSubmit.backgroundTintList = androidx.core.content.ContextCompat.getColorStateList(this, android.R.color.darker_gray)
+            tvFileName.text = "Anda sudah mengumpulkan tugas ini."
+            btnSelectFile.isEnabled = false
         }
     }
 

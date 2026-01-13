@@ -13,5 +13,8 @@ data class Assignment(
     val description: String,
 
     @SerializedName("deadline")
-    val deadline: String
+    val deadline: String,
+
+    @SerializedName("is_submitted")
+    val isSubmitted: Boolean = false
 )

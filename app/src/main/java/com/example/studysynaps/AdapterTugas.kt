@@ -28,19 +28,25 @@ class AdapterTugas(
         val item = assignments[position]
 
         holder.tvTitle.text = item.title
-        holder.tvSubtitle.text = "Deadline: ${item.deadline}"
-        holder.tvDateFooter.text = item.description // Or created date, utilizing available space
+        if (item.isSubmitted) {
+            holder.tvSubtitle.text = "Selesai"
+            holder.tvSubtitle.setTextColor(android.graphics.Color.parseColor("#4CAF50")) // Green
+            holder.tvDateFooter.visibility = View.GONE
+        } else {
+            holder.tvSubtitle.text = "Deadline: ${item.deadline}"
+            holder.tvSubtitle.setTextColor(android.graphics.Color.parseColor("#DC2626")) // Red
+            holder.tvDateFooter.visibility = View.VISIBLE
+        }
         
-        // Remove icon or set specific icon if needed, currently reusing layout might have icon
-        // Klik item untuk membuka detail (Nanti diarahkan ke Activity Detail/Upload)
         // Klik item untuk membuka detail
         holder.itemView.setOnClickListener {
             val context = holder.itemView.context
             val intent = android.content.Intent(context, DetailTugasActivity::class.java)
-            intent.putExtra("EXTRA_ID", item.id) // Ensure Assignment model has 'id'
+            intent.putExtra("EXTRA_ID", item.id) 
             intent.putExtra("EXTRA_TITLE", item.title)
             intent.putExtra("EXTRA_DESC", item.description)
             intent.putExtra("EXTRA_DEADLINE", item.deadline)
+            intent.putExtra("EXTRA_IS_SUBMITTED", item.isSubmitted)
             context.startActivity(intent)
         } 
     }

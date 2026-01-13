@@ -26,6 +26,18 @@ class PresensiAdapter(private val presensiList: List<PresensiItem>) :
         holder.tvCourseName.text = item.courseName
         holder.tvCourseCode.text = item.courseCode
         holder.tvScoreBadge.text = item.attendanceScore.toString()
+
+        holder.itemView.setOnClickListener {
+            val context = holder.itemView.context
+            if (item.courseId != null) {
+                val intent = android.content.Intent(context, DetailPresensiActivity::class.java)
+                intent.putExtra("EXTRA_COURSE_ID", item.courseId)
+                intent.putExtra("EXTRA_COURSE_NAME", item.courseName ?: "Mata Kuliah")
+                context.startActivity(intent)
+            } else {
+                android.widget.Toast.makeText(context, "Error: ID Mata Kuliah tidak ditemukan", android.widget.Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     override fun getItemCount(): Int {

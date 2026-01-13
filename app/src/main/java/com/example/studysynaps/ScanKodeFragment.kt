@@ -57,8 +57,13 @@ class ScanKodeFragment : Fragment() {
                                 response: retrofit2.Response<com.example.studysynaps.models.ApiResponse<Any>>
                             ) {
                                 if (response.isSuccessful && response.body()?.status == true) {
-                                    Toast.makeText(requireContext(), response.body()?.message, Toast.LENGTH_LONG).show()
+                                    // Toast.makeText(requireContext(), response.body()?.message, Toast.LENGTH_LONG).show()
                                     etKodePresensi.text?.clear()
+                                    
+                                    // Navigate to Success Screen
+                                    val intent = android.content.Intent(requireContext(), SuccessPresensiActivity::class.java)
+                                    startActivity(intent)
+                                    activity?.finish() // Close ScanActivity
                                 } else {
                                     // Parse Error Body untuk HTTP 4xx/5xx
                                     val errorJson = response.errorBody()?.string()

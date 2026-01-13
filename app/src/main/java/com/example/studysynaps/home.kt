@@ -131,6 +131,9 @@ class home : AppCompatActivity() {
 
     private fun setupMenu() {
         // Menu Clicks
+        findViewById<View>(R.id.btn_jadwal_ujian).setOnClickListener {
+             if (isUserActive()) startActivity(Intent(this, ExamScheduleActivity::class.java)) else showInactiveAlert()
+        }
         findViewById<View>(R.id.btn_presensi).setOnClickListener {
             if (isUserActive()) startActivity(Intent(this, PresensiActivity::class.java)) else showInactiveAlert()
         }

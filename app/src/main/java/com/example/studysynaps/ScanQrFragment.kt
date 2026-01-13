@@ -157,8 +157,11 @@ class ScanQrFragment : Fragment() {
                     response: retrofit2.Response<com.example.studysynaps.models.ApiResponse<Any>>
                 ) {
                     if (response.isSuccessful && response.body()?.status == true) {
-                        Toast.makeText(requireContext(), response.body()?.message, Toast.LENGTH_LONG).show()
-                        // Optional: Navigate away or restart camera
+                        // Toast.makeText(requireContext(), response.body()?.message, Toast.LENGTH_LONG).show()
+                        // Navigate to Success Screen
+                        val intent = android.content.Intent(requireContext(), SuccessPresensiActivity::class.java)
+                        startActivity(intent)
+                        activity?.finish() // Close ScanActivity
                     } else {
                         val msg = response.body()?.message ?: "Gagal presensi"
                         Toast.makeText(requireContext(), msg, Toast.LENGTH_LONG).show()

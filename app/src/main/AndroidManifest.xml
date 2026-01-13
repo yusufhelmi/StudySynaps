@@ -101,6 +101,21 @@
             android:name=".ForgotPasswordActivity"
             android:exported="false" />
         <activity
+            android:name=".SuccessPresensiActivity"
+            android:exported="false" />
+        <activity
+            android:name=".DetailPresensiActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ExamScheduleActivity"
+            android:exported="false" />
+        <activity
+            android:name=".HasilStudiActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TranskripActivity"
+            android:exported="false" />
+        <activity
             android:name=".SplashActivity"
             android:exported="true">
             <intent-filter>

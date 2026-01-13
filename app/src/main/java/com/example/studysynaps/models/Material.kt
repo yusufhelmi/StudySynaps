@@ -13,5 +13,8 @@ data class Material(
     val category: String,
 
     @SerializedName("thumbnail")
-    val thumbnail: String
+    val thumbnail: String,
+
+    @SerializedName("file_url")
+    val fileUrl: String
 )

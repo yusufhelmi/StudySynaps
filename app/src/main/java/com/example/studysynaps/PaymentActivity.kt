@@ -135,6 +135,24 @@ class PaymentActivity : AppCompatActivity() {
         }
     }
 
+    private var selectedPaymentType: String = "full"
+    private var paymentBottomSheet: com.google.android.material.bottomsheet.BottomSheetDialog? = null
+    private var tvFileName: TextView? = null
+    private var btnConfirm: MaterialButton? = null
+    private var imgPreview: android.widget.ImageView? = null
+
+    private val filePickerLauncher = registerForActivityResult(androidx.activity.result.contract.ActivityResultContracts.GetContent()) { uri ->
+        if (uri != null) {
+            tvFileName?.text = "Bukti_Bayar.jpg" // Mock name
+            tvFileName?.setTextColor(getColor(android.R.color.black))
+            btnConfirm?.isEnabled = true
+            
+            // Show Preview
+            imgPreview?.visibility = android.view.View.VISIBLE
+            imgPreview?.setImageURI(uri)
+        }
+    }
+
     private fun handlePayment() {
         val selectedId = rgPaymentType.checkedRadioButtonId
         if (selectedId == -1) {
@@ -142,26 +160,69 @@ class PaymentActivity : AppCompatActivity() {
             return
         }
 
-        val type = if (selectedId == R.id.rb_full) "full" else "dispensasi"
-        val userId = sessionManager.getUserId() ?: return
+        selectedPaymentType = if (selectedId == R.id.rb_full) "full" else "dispensasi"
+        
+        showUploadBottomSheet()
+    }
 
-        progressBar.visibility = android.view.View.VISIBLE
-        btnPay.isEnabled = false
+    private fun showUploadBottomSheet() {
+        val view = layoutInflater.inflate(R.layout.bottom_sheet_upload_payment, null)
+        paymentBottomSheet = com.google.android.material.bottomsheet.BottomSheetDialog(this)
+        paymentBottomSheet?.setContentView(view)
 
-        RetrofitClient.instance.payBill(userId, type).enqueue(object : Callback<com.example.studysynaps.models.ApiResponse<Any>> {
+        // Init Views in Sheet
+        val btnSelectFile = view.findViewById<LinearLayout>(R.id.btn_select_file)
+        tvFileName = view.findViewById(R.id.tv_file_name)
+        btnConfirm = view.findViewById(R.id.btn_confirm_pay)
+        imgPreview = view.findViewById(R.id.img_preview)
+
+        btnSelectFile.setOnClickListener {
+            filePickerLauncher.launch("image/*")
+        }
+
+        btnConfirm?.setOnClickListener {
+            simulateAdminChecking()
+        }
+
+        paymentBottomSheet?.show()
+    }
+
+    private fun simulateAdminChecking() {
+        paymentBottomSheet?.dismiss()
+        
+        // Custom Progress Dialog
+        val progressDialog = android.app.AlertDialog.Builder(this)
+            .setTitle("Memverifikasi Pembayaran")
+            .setMessage("Sistem sedang mengecek bukti pembayaran Anda. Mohon tunggu...")
+            .setCancelable(false)
+            .create()
+
+        progressDialog.show()
+
+        // Delay 3 seconds
+        android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
+            progressDialog.dismiss()
+            processRealPayment()
+        }, 3000)
+    }
+
+    private fun processRealPayment() {
+         val userId = sessionManager.getUserId() ?: return
+         // Show simple loading or reuse main progress bar
+         progressBar.visibility = android.view.View.VISIBLE
+
+         RetrofitClient.instance.payBill(userId, selectedPaymentType).enqueue(object : Callback<com.example.studysynaps.models.ApiResponse<Any>> {
             override fun onResponse(
                 call: Call<com.example.studysynaps.models.ApiResponse<Any>>,
                 response: Response<com.example.studysynaps.models.ApiResponse<Any>>
             ) {
                 progressBar.visibility = android.view.View.GONE
-                btnPay.isEnabled = true
                 
                 if (response.isSuccessful && response.body()?.status == true) {
-                    Toast.makeText(this@PaymentActivity, "Pembayaran Berhasil!", Toast.LENGTH_LONG).show()
+                    showSuccessDialog()
                     
                     // Update Local Session Status
                     sessionManager.updateStatus("active")
-                    
                     // Refresh Data
                     fetchBillingInfo()
                 } else {
@@ -171,10 +232,18 @@ class PaymentActivity : AppCompatActivity() {
 
             override fun onFailure(call: Call<com.example.studysynaps.models.ApiResponse<Any>>, t: Throwable) {
                 progressBar.visibility = android.view.View.GONE
-                btnPay.isEnabled = true
                 Toast.makeText(this@PaymentActivity, "Error: ${t.message}", Toast.LENGTH_SHORT).show()
             }
         })
+    }
+
+    private fun showSuccessDialog() {
+        android.app.AlertDialog.Builder(this)
+            .setTitle("Pembayaran Berhasil")
+            .setMessage("Bukti pembayaran telah diverifikasi. Status kemahasiswaan Anda kini AKTIF.")
+            .setIcon(R.drawable.ic_check_circle) // Ensure you have check icon or use generic
+            .setPositiveButton("OK", null)
+            .show()
     }
 
     private fun formatRupiah(number: Double): String {
