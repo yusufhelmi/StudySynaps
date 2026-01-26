@@ -98,7 +98,6 @@ class Login : AppCompatActivity() {
         findViewById<TextView>(R.id.tv_forgot_password).setOnClickListener {
             startActivity(Intent(this, ForgotPasswordActivity::class.java))
             overridePendingTransition(0, 0)
-            finish()
         }
 
         findViewById<ImageButton>(R.id.btn_back).setOnClickListener {

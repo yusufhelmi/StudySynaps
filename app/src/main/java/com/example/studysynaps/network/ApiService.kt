@@ -22,8 +22,16 @@ interface ApiService {
     @FormUrlEncoded
     @POST("Account/forgot")
     fun forgotPassword(
-        @Field("email") email: String
+        @Field("email") email: String,
+        @Field("nim") nim: String
     ): Call<AuthResponse>
+
+    @FormUrlEncoded
+    @POST("Account/reset_password")
+    fun resetPassword(
+        @Field("user_id") userId: Int,
+        @Field("new_password") newPassword: String
+    ): Call<ApiResponse<Any>>
 
     // --- Baru: Integrasi PizzaApp Logic ---
 

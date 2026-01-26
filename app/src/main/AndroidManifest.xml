@@ -116,6 +116,9 @@
             android:name=".TranskripActivity"
             android:exported="false" />
         <activity
+            android:name=".ResetPasswordActivity"
+            android:exported="false" />
+        <activity
             android:name=".SplashActivity"
             android:exported="true">
             <intent-filter>

@@ -13,6 +13,9 @@ import com.example.studysynaps.models.SessionManager
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.example.studysynaps.network.RetrofitClient
 
 class UpdatePhotoActivity : AppCompatActivity() {
 
@@ -42,6 +45,9 @@ class UpdatePhotoActivity : AppCompatActivity() {
         btnChoose.setOnClickListener {
             pickImage.launch("image/*")
         }
+
+        // Load current profile photo
+        loadCurrentProfilePhoto()
 
         btnSave.setOnClickListener {
             if (selectedUri != null) {
@@ -115,15 +121,41 @@ class UpdatePhotoActivity : AppCompatActivity() {
     private fun getFileFromUri(uri: Uri): java.io.File? {
         try {
             val inputStream = contentResolver.openInputStream(uri)
+            val bitmap = android.graphics.BitmapFactory.decodeStream(inputStream)
+            inputStream?.close()
+
             val file = java.io.File(cacheDir, "temp_profile_upload.jpg")
             val outputStream = java.io.FileOutputStream(file)
-            inputStream?.copyTo(outputStream)
-            inputStream?.close()
+            
+            // Compress to JPEG, Quality 80
+            bitmap.compress(android.graphics.Bitmap.CompressFormat.JPEG, 80, outputStream)
+            
+            outputStream.flush()
             outputStream.close()
             return file
         } catch (e: Exception) {
             e.printStackTrace()
             return null
+        }
+    }
+
+
+    private fun loadCurrentProfilePhoto() {
+        val sessionManager = SessionManager(this)
+        var photoUrl = sessionManager.getUserPhoto()
+
+        if (!photoUrl.isNullOrEmpty()) {
+            if (!photoUrl.startsWith("http") && !photoUrl.startsWith("content") && !photoUrl.startsWith("file")) {
+                val baseUrl = RetrofitClient.BASE_URL.replace("index.php/", "")
+                photoUrl = "$baseUrl$photoUrl"
+            }
+
+            Glide.with(this)
+                .load(photoUrl)
+                .placeholder(R.drawable.cristiano_ronaldo)
+                .error(R.drawable.cristiano_ronaldo)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(ivPreview)
         }
     }
 }

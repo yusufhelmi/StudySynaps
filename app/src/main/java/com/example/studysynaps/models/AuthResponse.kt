@@ -4,6 +4,8 @@ package com.example.studysynaps.models
 data class AuthResponse(
     val status: Boolean,
     val message: String,
+    @com.google.gson.annotations.SerializedName("user_id")
+    val userId: Int?, // For Forgot Password Response
     val data: UserData?
 )
 
